@@ -80,56 +80,44 @@
               </div>
               <div class="mockup-status">
                 <span class="status-pulse"></span>
-                <span>CONECTADO AO HUB</span>
+                <span>19 ANOS DE EXPERIÊNCIA</span>
               </div>
             </div>
             <div class="mockup-grid">
               <div class="mockup-card">
-                <span class="mockup-card-label">Ocupação do Pátio</span>
-                <span class="mockup-card-value accent" id="dash-occupancy">78%</span>
+                <span class="mockup-card-label">Vias Implementadas</span>
+                <span class="mockup-card-value accent" id="dash-vias">0</span>
               </div>
               <div class="mockup-card">
-                <span class="mockup-card-label">Faturamento Hoje</span>
-                <span class="mockup-card-value green" id="dash-revenue">R$ 14.280,00</span>
+                <span class="mockup-card-label">Vagas Gerenciadas</span>
+                <span class="mockup-card-value green" id="dash-vagas">0</span>
               </div>
               
-              <div class="mockup-chart-container">
-                <span class="mockup-chart-title">Fluxo de Veículos (Últimas Horas)</span>
-                <!-- SVG animado simulando gráfico -->
-                <svg class="mockup-svg-chart" viewBox="0 0 100 30" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id="chart-grad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stop-color="var(--color-primary)" stop-opacity="0.3"></stop>
-                      <stop offset="100%" stop-color="var(--color-primary)" stop-opacity="0.0"></stop>
-                    </linearGradient>
-                  </defs>
-                  <path d="M 0,25 Q 15,10 30,18 T 60,8 T 90,12 T 100,5 L 100,30 L 0,30 Z" fill="url(#chart-grad)"></path>
-                  <path d="M 0,25 Q 15,10 30,18 T 60,8 T 90,12 T 100,5" fill="none" stroke="var(--color-primary)" stroke-width="1.5"></path>
-                  <circle cx="100" cy="5" r="1.5" fill="var(--color-secondary)"></circle>
-                </svg>
-              </div>
-              
-              <div class="mockup-logs">
-                <div class="mockup-logs-header">
-                  <span>PLACA</span>
-                  <span>TIME</span>
-                  <span>PORTÃO</span>
-                  <span>STATUS</span>
-                </div>
-                <div id="dash-log-list">
-                  <!-- Inseridos por JS -->
-                  <div class="mockup-log-item">
-                    <span class="log-plate">FEG-7623</span>
-                    <span class="log-time">10:54:12</span>
-                    <span class="log-gate">ENTRADA 01</span>
-                    <span class="log-status">LIBERADO</span>
+              <!-- Parking Live Animation -->
+              <div class="mockup-parking-anim">
+                <div class="parking-anim-overlay">
+                  <div class="parking-anim-label">
+                    <span class="parking-pulse"></span>
+                    <span>LIVE · MONITORAMENTO EM TEMPO REAL</span>
                   </div>
-                  <div class="mockup-log-item">
-                    <span class="log-plate">UFO-0C78</span>
-                    <span class="log-time">10:52:05</span>
-                    <span class="log-gate">SAÍDA 02</span>
-                    <span class="log-status">LIBERADO</span>
+                  <!-- Scan lines animadas -->
+                  <div class="parking-scanline"></div>
+                  <!-- Indicadores sobrepostos -->
+                  <div class="parking-hud">
+                    <div class="parking-hud-item">
+                      <i class="fa-solid fa-video"></i>
+                      <span>CAM 01 · ENTRADA</span>
+                    </div>
+                    <div class="parking-hud-item hud-right">
+                      <i class="fa-solid fa-circle" style="color:#22c55e; font-size:0.5rem;"></i>
+                      <span>REC</span>
+                    </div>
                   </div>
+                  <!-- Corner brackets -->
+                  <div class="hud-corner hud-tl"></div>
+                  <div class="hud-corner hud-tr"></div>
+                  <div class="hud-corner hud-bl"></div>
+                  <div class="hud-corner hud-br"></div>
                 </div>
               </div>
             </div>

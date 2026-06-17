@@ -109,67 +109,51 @@ function initScrollAnimations() {
 }
 
 /* ==========================================================================
-   5. DASHBOARD SIMULATOR (HERO INTERACTION)
+   5. DASHBOARD SIMULATOR — CONTADORES ANIMADOS
    ========================================================================== */
 function initDashboardSimulator() {
-  const occupancyEl = document.getElementById('dash-occupancy');
-  const revenueEl = document.getElementById('dash-revenue');
-  const logListEl = document.getElementById('dash-log-list');
-  
-  let occupancy = 78;
-  let revenue = 14280.00;
-  
-  // Placas fictícias para rotação do simulador
-  const samplePlates = [
-    { plate: 'FEG-7623', type: 'ENTRADA', gate: 'ENTRADA 01' },
-    { plate: 'UFO-0C78', type: 'SAÍDA', gate: 'SAÍDA 02' },
-    { plate: 'ABC-1D23', type: 'ENTRADA', gate: 'ENTRADA 02' },
-    { plate: 'XYZ-9876', type: 'SAÍDA', gate: 'SAÍDA 01' },
-    { plate: 'KJS-4A82', type: 'ENTRADA', gate: 'ENTRADA 01' },
-    { plate: 'MOP-5192', type: 'SAÍDA', gate: 'SAÍDA 02' }
-  ];
-  
-  // Atualiza faturamento de forma sutil a cada 2 segundos
-  setInterval(() => {
-    const increment = Math.random() * 15 + 5; // Adiciona entre R$5 e R$20
-    revenue += increment;
-    revenueEl.textContent = formatBRL(revenue);
-    
-    // Pequena alteração na taxa de ocupação
-    if (Math.random() > 0.5) {
-      occupancy = Math.min(95, Math.max(60, occupancy + (Math.random() > 0.5 ? 1 : -1)));
-      occupancyEl.textContent = `${occupancy}%`;
-    }
-  }, 2500);
+  const viasEl  = document.getElementById('dash-vias');
+  const vagasEl = document.getElementById('dash-vagas');
 
-  // Roda o log de acessos a cada 4 segundos
-  setInterval(() => {
-    const randomIndex = Math.floor(Math.random() * samplePlates.length);
-    const item = samplePlates[randomIndex];
-    const timeString = new Date().toLocaleTimeString('pt-BR');
-    
-    // Cria elemento do log
-    const logItem = document.createElement('div');
-    logItem.className = 'mockup-log-item';
-    logItem.innerHTML = `
-      <span class="log-plate">${item.plate}</span>
-      <span class="log-time">${timeString}</span>
-      <span class="log-gate">${item.gate}</span>
-      <span class="log-status" style="color: ${item.type === 'ENTRADA' ? 'var(--color-accent)' : 'var(--color-secondary)'}">
-        ${item.type === 'ENTRADA' ? 'ENTROU' : 'SAIU'}
-      </span>
-    `;
-    
-    // Adiciona ao início da lista e remove o último se passar de 3
-    logListEl.insertBefore(logItem, logListEl.firstChild);
-    if (logListEl.children.length > 3) {
-      logListEl.removeChild(logListEl.lastChild);
-    }
-  }, 4000);
-}
+  if (!viasEl || !vagasEl) return;
 
-function formatBRL(value) {
-  return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  let started = false;
+
+  /**
+   * Anima um contador do 0 até o valor alvo.
+   * @param {HTMLElement} el      Elemento a atualizar
+   * @param {number}      target  Valor final (inteiro)
+   * @param {number}      duration Duração em ms
+   * @param {string}      suffix  Sufixo opcional (ex: '+')
+   */
+  function animateCounter(el, target, duration, suffix = '') {
+    const start = performance.now();
+    function step(now) {
+      const elapsed  = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      // easeOutExpo para desacelerar suavemente no final
+      const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      const current = Math.round(ease * target);
+      el.textContent = current.toLocaleString('pt-BR') + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // Dispara quando o dashboard entra na viewport
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        animateCounter(viasEl,  1489, 2200); // 1.489
+        animateCounter(vagasEl, 40262, 2800); // 40.262
+        observer.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const dashboard = document.querySelector('.mockup-dashboard');
+  if (dashboard) observer.observe(dashboard);
 }
 
 /* ==========================================================================
