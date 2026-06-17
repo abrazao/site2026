@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Softcase - O ecossistema tecnológico completo para gestão e automação inteligente de estacionamentos. Automação, pagamentos, LPR, IA e dados em tempo real.">
+  <title>Softcase - Tecnologia para Gestão e Automação de Estacionamentos</title>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Favicon placeholder (Softcase custom logo icon representation) -->
+  <link rel="icon" type="image/png" href="assets/images/logo_softcase_dark.png">
+</head>
+<body>
+
+  <!-- Elementos de Brilho de Fundo -->
+  <div class="glow-blob glow-blue"></div>
+  <div class="glow-blob glow-cyan"></div>
+
+  <!-- ==========================================================================
+       HEADER / NAVIGATION
+       ========================================================================== -->
+  <header class="header" id="header">
+    <div class="container">
+      <a href="#hero" class="logo">
+        <!-- Logo Softcase Copiado -->
+        <img src="assets/images/logo_softcase.png" alt="Softcase Logo" id="logo-img">
+      </a>
+      
+      <nav class="nav-container">
+        <ul class="nav-menu" id="nav-menu">
+          <li><a href="#hero" class="nav-link active">Home</a></li>
+          <li><a href="#sobre" class="nav-link">O que fazemos</a></li>
+          <li><a href="#diferenciais" class="nav-link">Diferenciais</a></li>
+          <li><a href="#produtos" class="nav-link">Produtos</a></li>
+          <li><a href="#parkvision" class="nav-link">ParkVision360</a></li>
+          <li><a href="#para-quem" class="nav-link">Para quem é</a></li>
+          <li><a href="#beneficios" class="nav-link">Benefícios</a></li>
+          <li class="header-cta mobile-cta"><a href="#contato" class="btn btn-primary">Fale com um especialista</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-cta">
+        <a href="#contato" class="btn btn-primary">Fale com um especialista</a>
+      </div>
+
+      <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       HERO SECTION
+       ========================================================================== -->
+  <section id="hero" class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content scroll-reveal">
+          <div class="badge-tech">Ecossistema Inteligente</div>
+          <h1 class="hero-title">O ecossistema tecnológico completo para <span>estacionamentos inteligentes</span></h1>
+          <p class="hero-subtitle">Automação, gestão financeira, inteligência operacional, pagamentos digitais, LPR, IA e dados em tempo real em uma única plataforma integrada.</p>
+          <div class="hero-ctas">
+            <a href="#contato" class="btn btn-primary">Fale com um especialista <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="#produtos" class="btn btn-secondary">Conheça as soluções</a>
+          </div>
+        </div>
+        
+        <div class="hero-visual scroll-reveal delay-200">
+          <!-- Dashboard Simulator -->
+          <div class="mockup-dashboard">
+            <div class="mockup-header">
+              <div class="mockup-title">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Softpark Dashboard - Live Feed</span>
+              </div>
+              <div class="mockup-status">
+                <span class="status-pulse"></span>
+                <span>CONECTADO AO HUB</span>
+              </div>
+            </div>
+            <div class="mockup-grid">
+              <div class="mockup-card">
+                <span class="mockup-card-label">Ocupação do Pátio</span>
+                <span class="mockup-card-value accent" id="dash-occupancy">78%</span>
+              </div>
+              <div class="mockup-card">
+                <span class="mockup-card-label">Faturamento Hoje</span>
+                <span class="mockup-card-value green" id="dash-revenue">R$ 14.280,00</span>
+              </div>
+              
+              <div class="mockup-chart-container">
+                <span class="mockup-chart-title">Fluxo de Veículos (Últimas Horas)</span>
+                <!-- SVG animado simulando gráfico -->
+                <svg class="mockup-svg-chart" viewBox="0 0 100 30" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="chart-grad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="var(--color-primary)" stop-opacity="0.3"></stop>
+                      <stop offset="100%" stop-color="var(--color-primary)" stop-opacity="0.0"></stop>
+                    </linearGradient>
+                  </defs>
+                  <path d="M 0,25 Q 15,10 30,18 T 60,8 T 90,12 T 100,5 L 100,30 L 0,30 Z" fill="url(#chart-grad)"></path>
+                  <path d="M 0,25 Q 15,10 30,18 T 60,8 T 90,12 T 100,5" fill="none" stroke="var(--color-primary)" stroke-width="1.5"></path>
+                  <circle cx="100" cy="5" r="1.5" fill="var(--color-secondary)"></circle>
+                </svg>
+              </div>
+              
+              <div class="mockup-logs">
+                <div class="mockup-logs-header">
+                  <span>PLACA</span>
+                  <span>TIME</span>
+                  <span>PORTÃO</span>
+                  <span>STATUS</span>
+                </div>
+                <div id="dash-log-list">
+                  <!-- Inseridos por JS -->
+                  <div class="mockup-log-item">
+                    <span class="log-plate">FEG-7623</span>
+                    <span class="log-time">10:54:12</span>
+                    <span class="log-gate">ENTRADA 01</span>
+                    <span class="log-status">LIBERADO</span>
+                  </div>
+                  <div class="mockup-log-item">
+                    <span class="log-plate">UFO-0C78</span>
+                    <span class="log-time">10:52:05</span>
+                    <span class="log-gate">SAÍDA 02</span>
+                    <span class="log-status">LIBERADO</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SEÇÃO O QUE A SOFTCASE FAZ
+       ========================================================================== -->
+  <section id="sobre" class="about">
+    <div class="container">
+      <div class="about-intro scroll-reveal">
+        <h2>O que a Softcase faz</h2>
+        <p>Desenvolvemos soluções integradas de hardware e software para automação, gestão operacional, controle financeiro, auditoria e inteligência de dados para estacionamentos de todos os portes. Nosso foco é converter operações analógicas em ecossistemas digitais eficientes, maximizando a receita e melhorando a experiência do usuário final.</p>
+      </div>
+
+      <div class="ecosystem-container">
+        <div class="ecosystem-content scroll-reveal">
+          <h3>O Ecossistema Conectado Softcase</h3>
+          <p>Diferente de sistemas fragmentados, a Softcase integra toda a jornada do veículo e do operador em uma única plataforma na nuvem em tempo real.</p>
+          <div class="ecosystem-list">
+            <div class="ecosystem-item-check">
+              <i class="fa-solid fa-circle-check"></i>
+              <div>
+                <span>Automação Integrada</span>
+                <p>Controle de cancelas, totens de ticket e sensores em perfeita sincronia.</p>
+              </div>
+            </div>
+            <div class="ecosystem-item-check">
+              <i class="fa-solid fa-circle-check"></i>
+              <div>
+                <span>Auditoria e Segurança</span>
+                <p>Conexão direta de aberturas manuais ao sistema financeiro anti-fraude.</p>
+              </div>
+            </div>
+            <div class="ecosystem-item-check">
+              <i class="fa-solid fa-circle-check"></i>
+              <div>
+                <span>Pagamento Omnichannel</span>
+                <p>Autoatendimento físico, PIX, cartões de crédito e carteiras digitais.</p>
+              </div>
+            </div>
+            <div class="ecosystem-item-check">
+              <i class="fa-solid fa-circle-check"></i>
+              <div>
+                <span>Gestão Multilojas</span>
+                <p>Gerenciamento centralizado de múltiplas unidades em um único painel ERP.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ecosystem-visual scroll-reveal delay-200">
+          <!-- Central Hub Diagram -->
+          <div class="ecosystem-hub">
+            <div class="hub-center">
+              <i class="fa-solid fa-cloud"></i>
+              <span class="hub-node-label" style="bottom:-30px; color:var(--color-secondary)">CLOUD HUB</span>
+            </div>
+            <div class="hub-node hub-node-1">
+              <i class="fa-solid fa-barcode"></i>
+              <span class="hub-node-label">Automação</span>
+            </div>
+            <div class="hub-node hub-node-2">
+              <i class="fa-solid fa-video"></i>
+              <span class="hub-node-label">LPR (Câmeras)</span>
+            </div>
+            <div class="hub-node hub-node-3">
+              <i class="fa-solid fa-credit-card"></i>
+              <span class="hub-node-label">SoftPay Pagamento</span>
+            </div>
+            <div class="hub-node hub-node-4">
+              <i class="fa-solid fa-mobile-screen-button"></i>
+              <span class="hub-node-label">Softpark Mobile</span>
+            </div>
+            <div class="hub-node hub-node-5">
+              <i class="fa-solid fa-file-invoice-dollar"></i>
+              <span class="hub-node-label">ERPCase Financeiro</span>
+            </div>
+            
+            <!-- Linhas de conexão animadas SVG -->
+            <svg class="hub-line-svg">
+              <!-- Linhas estáticas de fundo -->
+              <line x1="50%" y1="50%" x2="50%" y2="10%" class="line-connect"></line>
+              <line x1="50%" y1="50%" x2="90%" y2="35%" class="line-connect"></line>
+              <line x1="50%" y1="50%" x2="80%" y2="85%" class="line-connect"></line>
+              <line x1="50%" y1="50%" x2="20%" y2="85%" class="line-connect"></line>
+              <line x1="50%" y1="50%" x2="10%" y2="35%" class="line-connect"></line>
+              
+              <!-- Linhas animadas com dash-array -->
+              <path d="M 250,200 L 250,40" class="line-glow" id="glow-path-1"></path>
+              <path d="M 250,200 L 450,140" class="line-glow" id="glow-path-2"></path>
+              <path d="M 250,200 L 400,340" class="line-glow" id="glow-path-3"></path>
+              <path d="M 250,200 L 100,340" class="line-glow" id="glow-path-4"></path>
+              <path d="M 250,200 L 50,140" class="line-glow" id="glow-path-5"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SEÇÃO DIFERENCIAIS
+       ========================================================================== -->
+  <section id="diferenciais" class="differentials">
+    <div class="container">
+      <h2>Nossos Diferenciais</h2>
+      <p style="text-align:center; max-width:600px; margin:0 auto 4rem; color:var(--text-muted)">Unimos inovação de software a hardwares robustos de fabricação nacional para entregar resultados reais de faturamento e operação.</p>
+      
+      <div class="differentials-grid">
+        <!-- 1 -->
+        <div class="glass-card differential-card scroll-reveal">
+          <div class="diff-icon"><i class="fa-solid fa-network-wired"></i></div>
+          <h3>Ecossistema Integrado</h3>
+          <p>Toda a jornada integrada em uma plataforma. Sem retrabalho ou falhas de comunicação entre sistemas terceiros.</p>
+        </div>
+        <!-- 2 -->
+        <div class="glass-card differential-card scroll-reveal delay-100">
+          <div class="diff-icon"><i class="fa-solid fa-clock"></i></div>
+          <h3>Gestão em Tempo Real</h3>
+          <p>Monitore acessos, pagamentos e status de equipamentos instantaneamente a partir de qualquer dispositivo conectado.</p>
+        </div>
+        <!-- 3 -->
+        <div class="glass-card differential-card scroll-reveal delay-200">
+          <div class="diff-icon"><i class="fa-solid fa-toggle-on"></i></div>
+          <h3>Automação Completa</h3>
+          <p>Reduza dependência de processos manuais. Liberação inteligente e processamento automatizado de dados.</p>
+        </div>
+        <!-- 4 -->
+        <div class="glass-card differential-card scroll-reveal delay-300">
+          <div class="diff-icon"><i class="fa-solid fa-brain"></i></div>
+          <h3>IA Aplicada à Operação</h3>
+          <p>Reconhecimento de placa via LPR e análise comportamental com algoritmos próprios de alta precisão.</p>
+        </div>
+        <!-- 5 -->
+        <div class="glass-card differential-card scroll-reveal">
+          <div class="diff-icon"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+          <h3>Controle e Previsibilidade</h3>
+          <p>Ferramentas robustas de previsão de receita, planejamento de caixa e análise histórica das operações.</p>
+        </div>
+        <!-- 6 -->
+        <div class="glass-card differential-card scroll-reveal delay-100">
+          <div class="diff-icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <h3>Redução de Perdas</h3>
+          <p>Sistemas avançados de auditoria que previnem evasão de receita e identificam aberturas manuais não justificadas.</p>
+        </div>
+        <!-- 7 -->
+        <div class="glass-card differential-card scroll-reveal delay-200">
+          <div class="diff-icon"><i class="fa-solid fa-qrcode"></i></div>
+          <h3>Pagamentos Digitais</h3>
+          <p>Pagamento rápido via QR Code no totem de autoatendimento, PIX e cartões integrados à TEF moderna.</p>
+        </div>
+        <!-- 8 -->
+        <div class="glass-card differential-card scroll-reveal delay-300">
+          <div class="diff-icon"><i class="fa-solid fa-headset"></i></div>
+          <h3>Suporte Especializado</h3>
+          <p>Atendimento técnico e operacional dedicado com especialistas no segmento de estacionamentos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SEÇÃO DE PRODUTOS E SERVIÇOS
+       ========================================================================== -->
+  <section id="produtos" class="products">
+    <div class="container">
+      <h2>O Ecossistema de Produtos Softcase</h2>
+      <p style="text-align:center; max-width:600px; margin:0 auto 3rem; color:var(--text-muted)">Uma suíte modular completa que atende desde as necessidades locais de pista até a consolidação financeira corporativa.</p>
+      
+      <div class="products-wrapper">
+        <!-- Navegador das Tabs -->
+        <div class="tabs-navigation scroll-reveal">
+          <button class="tab-btn active" data-tab="softpark">Softpark Automação</button>
+          <button class="tab-btn" data-tab="erpcase">ERPCase</button>
+          <button class="tab-btn" data-tab="parkvision">ParkVision360</button>
+          <button class="tab-btn" data-tab="mobile">Softpark Mobile</button>
+          <button class="tab-btn" data-tab="softpay">SoftPay Autoatendimento</button>
+          <button class="tab-btn" data-tab="softrps">SoftRPS</button>
+          <button class="tab-btn" data-tab="parkflow">ParkFlow</button>
+          <button class="tab-btn" data-tab="softauditor">SoftAuditor</button>
+        </div>
+
+        <!-- Conteúdo das Tabs -->
+        <!-- 1. Softpark Automação -->
+        <div class="tab-content active" id="softpark">
+          <div class="product-info">
+            <span class="product-tag">HARDWARE & SOFTWARE DE PISTA</span>
+            <h3>Softpark Automação</h3>
+            <p class="product-desc">O núcleo físico do estacionamento. Controla cancelas rápidas, totens de entrada (emissão de tickets e leitura de cartões) e totens de saída (validação física).</p>
+            <div class="product-benefit">
+              <p class="product-benefit-label">Benefício Principal</p>
+              <p class="product-benefit-val">Elimina filas de entrada e saída com processamento local offline de contingência, garantindo pista 100% ativa.</p>
+            </div>
+            <p class="product-features-title">Recursos Técnicos</p>
+            <div class="product-features">
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Emissão de tickets térmica com QR Code</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Integração com LPR e Interfone VOIP</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Funcionamento contínuo offline</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Design robusto à prova de intempéries</div>
+            </div>
+            <a href="#contato" class="btn btn-outline-glow">Quero uma Demonstração</a>
+          </div>
+          <div class="product-visual contain-img">
+            <!-- Imagem do Totem Real Copiada -->
+            <img src="assets/images/softpark_fit.png" alt="Totem Softpark Fit Automação">
+          </div>
+        </div>
+
+        <!-- 2. ERPCase -->
+        <div class="tab-content" id="erpcase">
+          <div class="product-info">
+            <span class="product-tag">GESTÃO FINANCEIRA CORPORATIVA</span>
+            <h3>ERPCase</h3>
+            <p class="product-desc">O cérebro administrativo da operação. Sistema ERP robusto para faturamento, contas a pagar/receber, conciliação de cartões, gestão de mensalistas e faturamento corporativo.</p>
+            <div class="product-benefit">
+              <p class="product-benefit-label">Benefício Principal</p>
+              <p class="product-benefit-val">Visibilidade e conciliação financeira automatizada em um único local, reduzindo em até 95% o tempo de fechamento administrativo.</p>
+            </div>
+            <p class="product-features-title">Recursos Técnicos</p>
+            <div class="product-features">
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Conciliador de cartões de crédito/débito</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Faturamento de credenciados e mensalistas</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Fluxo de caixa e DRE automatizado</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Integração com sistemas bancários</div>
+            </div>
+            <a href="#contato" class="btn btn-outline-glow">Quero uma Demonstração</a>
+          </div>
+          <div class="product-visual">
+            <img src="assets/images/Imagem1Home.png" alt="ERPCase Dashboard Financeiro">
+          </div>
+        </div>
+
+        <!-- 3. ParkVision360 -->
+        <div class="tab-content" id="parkvision">
+          <div class="product-info">
+            <span class="product-tag">BI & BUSINESS INTELLIGENCE</span>
+            <h3>ParkVision360</h3>
+            <p class="product-desc">Monitoramento analítico e gerencial para tomadores de decisão. Reúne indicadores operacionais, ocupação de pátio histórica, curva de fluxo e projeções de faturamento em tempo real.</p>
+            <div class="product-benefit">
+              <p class="product-benefit-label">Benefício Principal</p>
+              <p class="product-benefit-val">Visão estratégica multiloja consolidada de ponta a ponta, permitindo reajustar tarifas e alocar pessoal com precisão matemática.</p>
+            </div>
+            <p class="product-features-title">Recursos Técnicos</p>
+            <div class="product-features">
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Dashboards interativos em tempo real</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Relatórios analíticos por unidade/período</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Alertas de anomalias operacionais</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Exportação nativa em Excel e PDF</div>
+            </div>
+            <a href="#contato" class="btn btn-outline-glow">Quero uma Demonstração</a>
+          </div>
+          <div class="product-visual">
+            <img src="assets/images/hero-premium.png" alt="ParkVision360 Dashboards em Tempo Real">
+          </div>
+        </div>
+
+        <!-- 4. Softpark Mobile -->
+        <div class="tab-content" id="mobile">
+          <div class="product-info">
+            <span class="product-tag">OPERAÇÃO DE PISTA & CONTINGÊNCIA</span>
+            <h3>Softpark Mobile</h3>
+            <p class="product-desc">O aplicativo definitivo para o operador. Transforma qualquer smartphone ou coletor de dados em um terminal móvel de registro de entrada/saída, validações e vistorias rápidas.</p>
+            <div class="product-benefit">
+              <p class="product-benefit-label">Benefício Principal</p>
+              <p class="product-benefit-val">Mobilidade total na pista. Garante faturamento ininterrupto mesmo em caso de manutenção física dos portões principais.</p>
+            </div>
+            <p class="product-features-title">Recursos Técnicos</p>
+            <div class="product-features">
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Entrada e saída via câmera do celular</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Registro fotográfico de avarias (Vistoria)</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Emissão de comprovantes via bluetooth</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Integração direta com a base principal</div>
+            </div>
+            <a href="#contato" class="btn btn-outline-glow">Quero uma Demonstração</a>
+          </div>
+          <div class="product-visual">
+            <!-- Imagem de totem ou celular no pátio -->
+            <img src="assets/images/novo_estacionamento.png" alt="Softpark Mobile Operações de Pátio">
+          </div>
+        </div>
+
+        <!-- 5. SoftPay Autoatendimento -->
+        <div class="tab-content" id="softpay">
+          <div class="product-info">
+            <span class="product-tag">TERMINAL DE AUTOATENDIMENTO</span>
+            <h3>SoftPay Autoatendimento</h3>
+            <p class="product-desc">Terminal de autoatendimento inteligente com tela touch de alta visibilidade. Suporta pagamentos rápidos via aproximação de cartões, PIX dinâmico exibido na tela ou dinheiro físico.</p>
+            <div class="product-benefit">
+              <p class="product-benefit-label">Benefício Principal</p>
+              <p class="product-benefit-val">Elimina filas nos caixas presenciais, cortando em até 80% o custo de atendimento da sua operação.</p>
+            </div>
+            <p class="product-features-title">Recursos Técnicos</p>
+            <div class="product-features">
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Leitor multiformato (barras e QR Code)</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Pagamento via PIX com baixa instantânea</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Impressão de recibo fiscal integrada</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Sistema de troco eletrônico ou cédulas</div>
+            </div>
+            <a href="#contato" class="btn btn-outline-glow">Quero uma Demonstração</a>
+          </div>
+          <div class="product-visual contain-img">
+            <!-- Imagem do Totem de Autoatendimento Copiada -->
+            <img src="assets/images/autopagamento_user.png" alt="SoftPay Autoatendimento Smart">
+          </div>
+        </div>
+
+        <!-- 6. SoftRPS -->
+        <div class="tab-content" id="softrps">
+          <div class="product-info">
+            <span class="product-tag">FISCAL & FATURAMENTO</span>
+            <h3>SoftRPS</h3>
+            <p class="product-desc">Geração automatizada de Recibo Provisório de Serviços (RPS). Integrado diretamente com as prefeituras locais para emissão imediata da NFS-e ao cliente.</p>
+            <div class="product-benefit">
+              <p class="product-benefit-label">Benefício Principal</p>
+              <p class="product-benefit-val">Garante conformidade fiscal integral para sua rede sem sobrecarregar a velocidade de atendimento na pista.</p>
+            </div>
+            <p class="product-features-title">Recursos Técnicos</p>
+            <div class="product-features">
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Integração com mais de 300 prefeituras</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Envio automático por e-mail para o cliente</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Conciliação em lote no fim do expediente</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Contingência offline de emissão de RPS</div>
+            </div>
+            <a href="#contato" class="btn btn-outline-glow">Quero uma Demonstração</a>
+          </div>
+          <div class="product-visual">
+            <img src="assets/images/varejo_lojas.png" alt="SoftRPS Emissão Fiscal Automática">
+          </div>
+        </div>
+
+        <!-- 7. ParkFlow -->
+        <div class="tab-content" id="parkflow">
+          <div class="product-info">
+            <span class="product-tag">DIRECIONAMENTO DE VAGAS & FLUXO</span>
+            <h3>ParkFlow</h3>
+            <p class="product-desc">Sistema de gerenciamento de fluxo interno. Painéis eletrônicos dinâmicos que exibem o número exato de vagas livres por andar ou setor, controlados por sensores ou câmeras analíticas.</p>
+            <div class="product-benefit">
+              <p class="product-benefit-label">Benefício Principal</p>
+              <p class="product-benefit-val">Melhora a experiência do cliente, reduzindo o tempo de busca por vaga em até 40% nas horas de pico.</p>
+            </div>
+            <p class="product-features-title">Recursos Técnicos</p>
+            <div class="product-features">
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Sensores ultrassônicos de vaga individual</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Câmeras analíticas com LED indicador</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Painéis direcionadores de LED de alto brilho</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Estatísticas de tempo médio de estacionamento</div>
+            </div>
+            <a href="#contato" class="btn btn-outline-glow">Quero uma Demonstração</a>
+          </div>
+          <div class="product-visual">
+            <img src="assets/images/modernizar_operacao.png" alt="ParkFlow Gestão de Vagas Inteligentes">
+          </div>
+        </div>
+
+        <!-- 8. SoftAuditor -->
+        <div class="tab-content" id="softauditor">
+          <div class="product-info">
+            <span class="product-tag">AUDITORIA E ANTI-FRAUDE</span>
+            <h3>SoftAuditor</h3>
+            <p class="product-desc">Sentinela contra desvios de caixa. Monitoramento em tempo real de toda abertura de cancela por interrupção manual de bobina, exclusão de tickets ou isenções suspeitas.</p>
+            <div class="product-benefit">
+              <p class="product-benefit-label">Benefício Principal</p>
+              <p class="product-benefit-val">Elimina perdas financeiras silenciosas na pista, gerando relatórios de cruzamento físico vs digital.</p>
+            </div>
+            <p class="product-features-title">Recursos Técnicos</p>
+            <div class="product-features">
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Gravação fotográfica de aberturas manuais</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Cruzamento inteligente de dados de sensores</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Sistema de aprovação digital de isenções</div>
+              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Alertas push em tempo real para gerência</div>
+            </div>
+            <a href="#contato" class="btn btn-outline-glow">Quero uma Demonstração</a>
+          </div>
+          <div class="product-visual">
+            <img src="assets/images/grandes_redes.png" alt="SoftAuditor Controle de Fraudes">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SEÇÃO PARKVISION360 EM DESTAQUE (INTELIGÊNCIA ARTIFICIAL)
+       ========================================================================== -->
+  <section id="parkvision" class="ai-highlight">
+    <div class="container">
+      <div class="ai-grid">
+        <div class="ai-content scroll-reveal">
+          <div class="ai-badge">Inteligência Artificial LPR</div>
+          <h2 class="ai-title">ParkVision360: Gestão Inteligente com Visão Computacional</h2>
+          <p class="ai-intro">Reconhecimento instantâneo de placas de veículos (LPR) via inteligência artificial própria. Otimize o tempo de trânsito nas pistas e automatize regras complexas de acesso sem intervenção humana.</p>
+          
+          <div class="ai-features-grid">
+            <div class="ai-feature-card">
+              <i class="fa-solid fa-gauge-high"></i>
+              <div>
+                <h4>Dashboards em Tempo Real</h4>
+                <p>Métricas operacionais atualizadas a cada segundo, no celular ou no computador.</p>
+              </div>
+            </div>
+            <div class="ai-feature-card">
+              <i class="fa-solid fa-magnifying-glass-dollar"></i>
+              <div>
+                <h4>Visibilidade Financeira</h4>
+                <p>Audite fluxos de caixa em tempo real, previna discrepâncias operacionais na hora.</p>
+              </div>
+            </div>
+            <div class="ai-feature-card">
+              <i class="fa-solid fa-bezier-curve"></i>
+              <div>
+                <h4>Indicadores Estratégicos</h4>
+                <p>Acompanhe ticket médio, ocupação por período e tempo médio de permanência.</p>
+              </div>
+            </div>
+            <div class="ai-feature-card">
+              <i class="fa-solid fa-arrow-trend-up"></i>
+              <div>
+                <h4>Previsibilidade de Receita</h4>
+                <p>Algoritmos que analisam dados históricos para prever a ocupação futura.</p>
+              </div>
+            </div>
+            <div class="ai-feature-card">
+              <i class="fa-solid fa-database"></i>
+              <div>
+                <h4>Decisão Baseada em Dados</h4>
+                <p>Relatórios inteligentes que sugerem reajustes de tarifas para ganho máximo.</p>
+              </div>
+            </div>
+            <div class="ai-feature-card">
+              <i class="fa-solid fa-network-wired"></i>
+              <div>
+                <h4>Múltiplas Unidades</h4>
+                <p>Sua rede consolidada em um único painel central de controle inteligente.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ai-visual scroll-reveal delay-200">
+          <!-- Live LPR Camera & Log Simulator -->
+          <div class="lpr-simulator">
+            <!-- Background configurado no JS via inline style ou imagens da pasta -->
+            <div class="lpr-video-feed" id="lpr-video" style="background-image: url('assets/images/lpr_estacionamento.jpg');">
+              <div class="lpr-scan-overlay"></div>
+              
+              <!-- Caixa delimitadora LPR simulada -->
+              <div class="lpr-box" id="lpr-box" style="top: 110px; left: 180px; width: 140px; height: 50px;">
+                <div class="lpr-corner c-tl"></div>
+                <div class="lpr-corner c-tr"></div>
+                <div class="lpr-corner c-bl"></div>
+                <div class="lpr-corner c-br"></div>
+                <div class="lpr-label-box" id="lpr-status-label">LPR: PROCESSANDO</div>
+              </div>
+            </div>
+            
+            <div class="lpr-meta">
+              <div class="lpr-meta-grid">
+                <div class="lpr-meta-item">
+                  <span class="lpr-meta-label">CÂMERA DE ACESSO</span>
+                  <span class="lpr-meta-val" id="lpr-cam-name">ENTRADA PRINCIPAL 01</span>
+                </div>
+                <div class="lpr-meta-item">
+                  <span class="lpr-meta-label">CONFIDENCE METER</span>
+                  <span class="lpr-meta-val" id="lpr-confidence" style="color:var(--color-accent)">99.4%</span>
+                </div>
+                <div class="lpr-meta-item" style="grid-column: span 2; margin-top: 0.5rem;">
+                  <span class="lpr-meta-label">PLACA DIGITAL DETECTADA</span>
+                  <div class="lpr-plate-display" id="lpr-plate-display">FEG-7623</div>
+                </div>
+                <div class="lpr-meta-item" style="grid-column: span 2; margin-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top:0.5rem;">
+                  <span class="lpr-meta-label">PROPRIETÁRIO / CATEGORIA</span>
+                  <span class="lpr-meta-val" id="lpr-owner" style="font-size:0.85rem">VW VIRTUS - MENSALISTA</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="lpr-log">
+              <div class="lpr-log-title">
+                <span>LPR EVENT LOG</span>
+                <span>STATUS</span>
+              </div>
+              <div class="lpr-log-list" id="lpr-log-list">
+                <!-- Inserido por JS -->
+                <div class="lpr-log-item">
+                  <span style="color:var(--color-secondary)">[11:02:14]</span> FEG-7623 - ENTRADA - LIBERADO
+                  <span style="color:var(--color-accent)">OK</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SEÇÃO PARA QUEM É (SEGMENTOS)
+       ========================================================================== -->
+  <section id="para-quem" class="segments">
+    <div class="container">
+      <h2>Para quem é a Softcase?</h2>
+      <p style="text-align:center; max-width:600px; margin:0 auto 4rem; color:var(--text-muted)">Nossa tecnologia é flexível e escalável, moldada especificamente para as necessidades operacionais de diferentes modelos de negócio.</p>
+      
+      <div class="segments-grid">
+        <!-- 1. Shopping Centers -->
+        <div class="glass-card segment-card scroll-reveal">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <h3>Shopping Centers</h3>
+          <p>Operações de altíssimo volume que exigem integração rápida com redes de fidelidade, validação rápida de isenções por lojas e autoatendimento eficiente.</p>
+          <div class="segment-features-list">
+            <div class="segment-feature-line"><i class="fa-solid fa-chevron-right"></i> Isenções por QR Code de Lojas</div>
+            <div class="segment-feature-line"><i class="fa-solid fa-chevron-right"></i> Integração com APPs do Shopping</div>
+          </div>
+        </div>
+        <!-- 2. Estacionamentos Comerciais -->
+        <div class="glass-card segment-card scroll-reveal delay-100">
+          <i class="fa-solid fa-square-parking"></i>
+          <h3>Estacionamentos Comerciais</h3>
+          <p>Maximização de vagas rotativas, gerenciamento eficiente de mensalistas e redução drástica no custo operacional de pessoal com pistas inteligentes.</p>
+          <div class="segment-features-list">
+            <div class="segment-feature-line"><i class="fa-solid fa-chevron-right"></i> Totens Rápidos Compactos</div>
+            <div class="segment-feature-line"><i class="fa-solid fa-chevron-right"></i> Baixo custo de manutenção</div>
+          </div>
+        </div>
+        <!-- 3. Aeroportos -->
+        <div class="glass-card segment-card scroll-reveal delay-200">
+          <i class="fa-solid fa-plane"></i>
+          <h3>Aeroportos</h3>
+          <p>Controle severo de acessos nas vias rápidas, gestão de tarifas dinâmicas de longo prazo (estadias longas) e altos níveis de segurança física perimetral.</p>
+          <div class="segment-features-list">
+            <div class="segment-feature-line"><i class="fa-solid fa-chevron-right"></i> LPR redundante por pista</div>
+            <div class="segment-feature-line"><i class="fa-solid fa-chevron-right"></i> Gestão de pátios remotos</div>
+          </div>
+        </div>
+        <!-- 4. Hospitais -->
+        <div class="glass-card segment-card scroll-reveal">
+          <i class="fa-solid fa-hospital-user"></i>
+          <h3>Hospitais</h3>
+          <p>Prioridade de liberação para ambulâncias e médicos, controle rigoroso de permanência de fornecedores e tarifas facilitadas para pacientes de longa estada.</p>
+          <div class="segment-features-list">
+            <div class="segment-feature-line"><i class="fa-solid fa-chevron-right"></i> Cadastro rápido de médicos (LPR)</div>
+            <div class="segment-feature-line"><i class="fa-solid fa-chevron-right"></i> Isenção de emergência rápida</div>
+          </div>
+        </div>
+        <!-- 5. Condomínios Corporativos -->
+        <div class="glass-card segment-card scroll-reveal delay-100">
+          <i class="fa-solid fa-building"></i>
+          <h3>Condomínios Corporativos</h3>
+          <p>Autenticação de condôminos credenciados, reservas de vagas de visitantes integradas à recepção e relatórios de ocupação de pátios por empresa.</p>
+          <div class="segment-features-list">
+            <div class="segment-feature-line"><i class="fa-solid fa-chevron-right"></i> Agendamento prévio de visitantes</div>
+            <div class="segment-feature-line"><i class="fa-solid fa-chevron-right"></i> Divisão de vagas por CNPJ</div>
+          </div>
+        </div>
+        <!-- 6. Arenas e Grandes Operações -->
+        <div class="glass-card segment-card scroll-reveal delay-200">
+          <i class="fa-solid fa-masks-theater"></i>
+          <h3>Arenas e Grandes Operações</h3>
+          <p>Vasão de entrada e saída extrema em dias de jogos ou shows. Exige cobrança tarifada antecipada em lote e pistas 100% livres de gargalo.</p>
+          <div class="segment-features-list">
+            <div class="segment-feature-line"><i class="fa-solid fa-chevron-right"></i> Cobrança antecipada (Tarifa Fixa)</div>
+            <div class="segment-feature-line"><i class="fa-solid fa-chevron-right"></i> Velocidade máxima de pista</div>
+          </div>
+        </div>
+        <!-- 7. Redes de Estacionamento -->
+        <div class="glass-card segment-card scroll-reveal" style="grid-column: span 3; text-align: center;">
+          <i class="fa-solid fa-network-wired" style="font-size: 2.25rem;"></i>
+          <h3 style="font-size: 1.5rem;">Redes de Estacionamento (Grandes Administradoras)</h3>
+          <p style="max-width: 800px; margin: 0 auto 1.5rem;">Sistemas construídos para consolidar centenas de unidades operacionais em um banco de dados centralizado. Permite auditorias globais de caixa, gestão centralizada de compras, controle de faturamento unificado de fornecedores e benchmarking entre filiais.</p>
+          <div class="segment-features-list" style="display: inline-flex; gap: 2rem; border-top: none; padding-top: 0;">
+            <div class="segment-feature-line" style="margin-bottom:0;"><i class="fa-solid fa-chevron-right"></i> Console Centralizado Multiloja</div>
+            <div class="segment-feature-line" style="margin-bottom:0;"><i class="fa-solid fa-chevron-right"></i> API de Integração Corporativa SAP/TOTVS</div>
+            <div class="segment-feature-line" style="margin-bottom:0;"><i class="fa-solid fa-chevron-right"></i> Auditoria anti-fraude global</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SEÇÃO BENEFÍCIOS (VALUE METRICS)
+       ========================================================================== -->
+  <section id="beneficios" class="benefits">
+    <div class="container">
+      <h2>O Impacto do Nosso Ecossistema</h2>
+      <p style="text-align:center; max-width:600px; margin:0 auto 3rem; color:var(--text-muted)">Resultados expressivos e validados por mais de 500 operações que utilizam Softcase diariamente.</p>
+      
+      <div class="benefits-grid">
+        <div class="glass-card metric-card scroll-reveal">
+          <div class="metric-value" data-target="35">+35%</div>
+          <h4>Faturamento Operacional</h4>
+          <p>Aumento médio de receita obtido após implementação de cobrança integrada e LPR.</p>
+        </div>
+        <div class="glass-card metric-card scroll-reveal delay-100">
+          <div class="metric-value" data-target="95">-95%</div>
+          <h4>Perdas Financeiras</h4>
+          <p>Redução drástica em vazamento de receita e fraudes operacionais com SoftAuditor.</p>
+        </div>
+        <div class="glass-card metric-card scroll-reveal delay-200">
+          <div class="metric-value" data-target="99">99.8%</div>
+          <h4>Uptime de Equipamentos</h4>
+          <p>Disponibilidade local com controle híbrido offline, sem paradas em horários de pico.</p>
+        </div>
+      </div>
+
+      <div class="benefits-list-row">
+        <!-- 1 -->
+        <div class="benefit-bullet scroll-reveal">
+          <i class="fa-solid fa-circle-check"></i>
+          <div>
+            <h5>Mais controle operacional</h5>
+            <p>Monitore portões, status das bobinas e fluxo de pista sem sair da mesa do gerente.</p>
+          </div>
+        </div>
+        <!-- 2 -->
+        <div class="benefit-bullet scroll-reveal delay-100">
+          <i class="fa-solid fa-circle-check"></i>
+          <div>
+            <h5>Menos evasões e perdas</h5>
+            <p>Controle preciso de passagens e bloqueio ativo a placas irregulares no LPR.</p>
+          </div>
+        </div>
+        <!-- 3 -->
+        <div class="benefit-bullet scroll-reveal delay-200">
+          <i class="fa-solid fa-circle-check"></i>
+          <div>
+            <h5>Decisões rápidas</h5>
+            <p>Gere relatórios completos de faturamento de toda a rede em menos de 10 segundos.</p>
+          </div>
+        </div>
+        <!-- 4 -->
+        <div class="benefit-bullet scroll-reveal delay-300">
+          <i class="fa-solid fa-circle-check"></i>
+          <div>
+            <h5>Melhor experiência</h5>
+            <p>Seu cliente entra, paga no autoatendimento via PIX e sai sem filas desnecessárias.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SEÇÃO DE CONTATO / CTA FINAL
+       ========================================================================== -->
+  <section id="contato" class="contact-section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-text scroll-reveal">
+          <h2>Pronto para transformar a gestão do seu estacionamento?</h2>
+          <p class="contact-p">Fale com a Softcase e descubra como nosso ecossistema pode tornar sua operação mais inteligente, segura e rentável. Preencha o formulário e fale com um especialista do setor.</p>
+          
+          <div class="contact-info-list">
+            <div class="contact-info-item">
+              <i class="fa-solid fa-phone"></i>
+              <div>
+                <p>TELEFONE COMERCIAL</p>
+                <p>0800 750 3000</p>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <i class="fa-solid fa-envelope"></i>
+              <div>
+                <p>E-MAIL COMERCIAL</p>
+                <p>comercial@softcase.com.br</p>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <i class="fa-solid fa-location-dot"></i>
+              <div>
+                <p>SEDE CORPORATIVA</p>
+                <p>São Paulo - SP, Brasil</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scroll-reveal delay-200">
+          <!-- Card do Formulário -->
+          <div class="glass-card form-container">
+            <!-- Form State -->
+            <form id="contact-form" action="#" method="POST">
+              <h3 class="form-title">Fale com um Especialista</h3>
+              <p class="form-subtitle">Retornaremos em menos de 2 horas úteis.</p>
+              
+              <div class="form-group">
+                <label for="name" class="form-label">Nome Completo</label>
+                <input type="text" id="name" name="name" class="form-control" placeholder="Ex: Roberto Silva" required>
+              </div>
+              
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="email" class="form-label">E-mail Corporativo</label>
+                  <input type="email" id="email" name="email" class="form-control" placeholder="Ex: roberto@empresa.com" required>
+                </div>
+                <div class="form-group">
+                  <label for="phone" class="form-label">Telefone / WhatsApp</label>
+                  <input type="tel" id="phone" name="phone" class="form-control" placeholder="Ex: (11) 98765-4321" required>
+                </div>
+              </div>
+              
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="company" class="form-label">Nome da Empresa</label>
+                  <input type="text" id="company" name="company" class="form-control" placeholder="Ex: Park Brasil Ltda." required>
+                </div>
+                <div class="form-group">
+                  <label for="spots" class="form-label">Tamanho do Estacionamento</label>
+                  <select id="spots" name="spots" class="form-control" required>
+                    <option value="" disabled selected>Selecione uma opção</option>
+                    <option value="ate-100">Até 100 vagas</option>
+                    <option value="101-500">101 a 500 vagas</option>
+                    <option value="mais-500">Mais de 500 vagas</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="role" class="form-label">Seu Cargo / Função</label>
+                <input type="text" id="role" name="role" class="form-control" placeholder="Ex: Diretor de Operações" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="message" class="form-label">Mensagem (Opcional)</label>
+                <textarea id="message" name="message" class="form-control" placeholder="Conte-nos um pouco sobre o seu desafio..."></textarea>
+              </div>
+              
+              <button type="submit" class="btn btn-primary form-submit-btn">Solicitar demonstração <i class="fa-solid fa-arrow-right"></i></button>
+            </form>
+            
+            <!-- Success State (Exibido via JS) -->
+            <div class="form-success-state" id="form-success">
+              <div class="success-icon">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <h3>Mensagem Enviada!</h3>
+              <p>Obrigado por entrar em contato. Um de nossos especialistas em estacionamentos retornará sua ligação em breve.</p>
+              <button class="btn btn-secondary" onclick="resetFormState()">Voltar ao site</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       FOOTER
+       ========================================================================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-info">
+          <a href="#hero" class="footer-logo">
+            <img src="assets/images/logo_softcase.png" alt="Softcase Logo">
+          </a>
+          <p>A Softcase desenvolve hardware e software de alta tecnologia para gestão, controle e automação completa de estacionamentos. Criamos soluções de pista, caixas e inteligência para garantir a melhor eficiência B2B do mercado.</p>
+          <div class="footer-socials">
+            <a href="#" class="social-link" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" class="social-link" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#" class="social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-col">
+          <h4>Produtos</h4>
+          <ul class="footer-links">
+            <li><a href="#produtos">Softpark Automação</a></li>
+            <li><a href="#produtos">ERPCase Financeiro</a></li>
+            <li><a href="#produtos">ParkVision360</a></li>
+            <li><a href="#produtos">SoftPay Autoatendimento</a></li>
+            <li><a href="#produtos">Softpark Mobile</a></li>
+            <li><a href="#produtos">SoftAuditor</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-col">
+          <h4>Institucional</h4>
+          <ul class="footer-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#sobre">O que fazemos</a></li>
+            <li><a href="#diferenciais">Diferenciais</a></li>
+            <li><a href="#para-quem">Para quem é</a></li>
+            <li><a href="#contato">Fale com um especialista</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-col">
+          <h4>Contatos</h4>
+          <div class="footer-contact-info">
+            <div class="footer-contact-item">
+              <i class="fa-solid fa-phone"></i>
+              <span>0800 750 3000 (Central)<br>(11) 3450-4000 (SP)</span>
+            </div>
+            <div class="footer-contact-item">
+              <i class="fa-solid fa-envelope"></i>
+              <span><a href="mailto:comercial@softcase.com.br">comercial@softcase.com.br</a></span>
+            </div>
+            <div class="footer-contact-item">
+              <i class="fa-solid fa-location-dot"></i>
+              <span>Av. Paulista, 1000, 10º Andar<br>Bela Vista, São Paulo - SP</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 Softcase Tecnologia S/A. Todos os direitos reservados. CNPJ: 12.345.678/0001-90</p>
+        <div class="footer-legal-links">
+          <a href="#">Política de Privacidade</a>
+          <a href="#">Termos de Uso</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Custom JavaScript -->
+  <script src="js/main.js"></script>
+</body>
+</html>
