@@ -2335,22 +2335,23 @@ textarea.form-control {
   .nav-menu {
     position: fixed;
     top: var(--header-height);
-    left: -100%;
+    left: 0;
     width: 100%;
     height: calc(100vh - var(--header-height));
+    transform: translateX(-100%);
     background: rgba(7, 9, 19, 0.98);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     flex-direction: column;
     padding: 3rem 1.5rem;
     gap: 1.5rem;
-    transition: left var(--transition-normal);
+    transition: transform var(--transition-normal);
     align-items: flex-start;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
   }
   
   .nav-menu.mobile-active {
-    left: 0;
+    transform: translateX(0);
   }
   
   .header-cta {
@@ -2413,5 +2414,301 @@ textarea.form-control {
     flex-direction: column;
     text-align: center;
     gap: 1.5rem;
+  }
+}
+
+/* Responsividade refinada para telas pequenas */
+@media (max-width: 768px) {
+  body,
+  main,
+  section,
+  .container {
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  a,
+  button,
+  .product-desc,
+  .ai-intro,
+  .hero-subtitle,
+  .segment-feature-line {
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .glow-blob {
+    display: none;
+  }
+
+  .glow-blue {
+    left: -120px;
+  }
+
+  .glow-cyan {
+    right: -120px;
+    left: auto;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 320px;
+    min-height: 52px;
+    padding: 0.85rem 1rem;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.25;
+  }
+
+  .hero {
+    min-height: auto;
+    padding-bottom: 5rem;
+  }
+
+  .hero-grid {
+    align-items: stretch;
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9rem;
+  }
+
+  .hero-ctas .btn {
+    max-width: 100%;
+  }
+
+  .mockup-dashboard,
+  .lpr-simulator,
+  .product-visual,
+  .erpcase-media-stage,
+  .parkvision-media-stage,
+  .softpark-media-stage {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .mockup-dashboard {
+    padding: 1rem;
+    border-radius: 16px;
+  }
+
+  .mockup-header,
+  .mockup-status,
+  .mockup-title,
+  .parking-anim-label,
+  .parking-hud {
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+
+  .mockup-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto minmax(220px, 1fr);
+  }
+
+  .mockup-card,
+  .mockup-parking-anim {
+    grid-column: 1;
+  }
+
+  .mockup-parking-anim {
+    min-height: 240px;
+  }
+
+  .tabs-navigation {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: stretch;
+    gap: 0.65rem;
+    margin-bottom: 3rem;
+  }
+
+  .tab-btn {
+    width: 100%;
+    min-height: 46px;
+    padding: 0.75rem 1rem;
+    white-space: normal;
+    line-height: 1.25;
+    text-align: center;
+  }
+
+  .product-section-panel {
+    min-width: 0;
+  }
+
+  .product-section-panel + .product-section-panel {
+    margin-top: 4.5rem;
+    padding-top: 4.5rem;
+  }
+
+  .product-info,
+  .ai-content,
+  .ai-visual,
+  .product-features,
+  .ai-features-grid {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .product-info h3,
+  .ai-title {
+    font-size: clamp(1.8rem, 9vw, 2.35rem);
+  }
+
+  .product-desc,
+  .ai-intro,
+  .hero-subtitle,
+  .about-intro p {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .product-feature-item,
+  .ai-feature-card,
+  .erpcase-feature-card {
+    min-width: 0;
+  }
+
+  .product-feature-item i,
+  .erpcase-feature-card i,
+  .ai-feature-card i {
+    flex-shrink: 0;
+  }
+
+  .lpr-video-feed {
+    min-height: 220px;
+  }
+
+  .lpr-meta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lpr-plate-meta,
+  .product-lpr-visual .lpr-plate-meta {
+    grid-column: auto;
+  }
+
+  .lpr-plate-display,
+  .product-lpr-visual .lpr-plate-display {
+    height: auto;
+    min-height: 42px;
+    font-size: clamp(1.05rem, 7vw, 1.45rem);
+    letter-spacing: 0.08em;
+    white-space: normal;
+  }
+
+  .lpr-log-title,
+  .lpr-log-item {
+    gap: 0.5rem;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  .ecosystem-visual {
+    overflow: hidden;
+    height: min(360px, 92vw);
+  }
+
+  .ecosystem-hub svg,
+  .ecosystem-hub {
+    max-width: 100%;
+  }
+
+  .line-glow {
+    display: none;
+  }
+
+  .segments-grid .segment-card[style] {
+    grid-column: 1 / -1 !important;
+    text-align: left !important;
+  }
+
+  .segments-grid .segment-card[style] > p {
+    max-width: 100% !important;
+  }
+
+  .segments-grid .segment-card[style] .segment-features-list {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0.85rem !important;
+  }
+
+  .segment-feature-line {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  section {
+    padding: 4rem 0;
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 11vw, 2.65rem);
+  }
+
+  .badge-tech,
+  .product-tag,
+  .product-features-title {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .mockup-header {
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .mockup-status {
+    border-radius: 8px;
+  }
+
+  .product-section-panel + .product-section-panel {
+    margin-top: 3.5rem;
+    padding-top: 3.5rem;
+  }
+
+  #softpark .softpark-media-stage,
+  #mobile .mobile-product-visual,
+  #softpay .softpay-product-visual,
+  #softrps .softrps-product-visual,
+  #parkflow .parkflow-product-visual {
+    height: 300px;
+    min-height: 300px;
+  }
+
+  .erpcase-media-stage,
+  .parkvision-media-stage {
+    min-height: 280px;
+  }
+
+  .lpr-video-feed {
+    min-height: 190px;
+  }
+
+  .lpr-meta,
+  .lpr-log,
+  .product-lpr-visual .lpr-meta,
+  .product-lpr-visual .lpr-log,
+  .softpark-media-stage .lpr-meta,
+  .softpark-media-stage .lpr-log {
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+  }
+
+  .segment-feature-line {
+    align-items: flex-start;
   }
 }
