@@ -315,7 +315,7 @@
 
         <!-- Conteúdo das Tabs -->
         <!-- 1. Softpark Automação -->
-        <div class="tab-content active" id="softpark">
+        <div class="tab-content product-section-panel" id="softpark">
           <div class="softpark-tab-showcase ai-grid">
             <div class="ai-content">
               <span class="product-tag">HARDWARE & SOFTWARE DE PISTA</span>
@@ -416,7 +416,7 @@
         </div>
 
         <!-- 2. ERPCase -->
-        <div class="tab-content" id="erpcase">
+        <div class="tab-content product-section-panel" id="erpcase">
           <div class="erpcase-tab-showcase ai-grid">
             <div class="ai-content">
               <span class="product-tag">GESTÃO FINANCEIRA e ADMINISTRATIVA EM TEMPO REAL</span>
@@ -480,7 +480,7 @@
         </div>
 
         <!-- 3. ParkVision360 -->
-        <div class="tab-content" id="parkvision">
+        <div class="tab-content product-section-panel" id="parkvision">
           <div class="parkvision-tab-showcase ai-grid">
             <div class="ai-content">
               <span class="product-tag">Gestão Inteligente em Tempo Real</span>
@@ -544,7 +544,7 @@
         </div>
 
         <!-- 4. Softpark Mobile -->
-        <div class="tab-content" id="mobile">
+        <div class="tab-content product-section-panel" id="mobile">
           <div class="product-info">
             <span class="product-tag">OPERAÇÃO DE PISTA & CONTINGÊNCIA</span>
             <h3>Softpark Mobile</h3>
@@ -588,7 +588,7 @@
         </div>
 
         <!-- 5. SoftPay Autoatendimento -->
-        <div class="tab-content" id="softpay">
+        <div class="tab-content product-section-panel" id="softpay">
           <div class="product-info">
             <span class="product-tag">TERMINAL DE AUTOATENDIMENTO</span>
             <h3>SoftPay Autoatendimento</h3>
@@ -632,53 +632,91 @@
         </div>
 
         <!-- 6. SoftRPS -->
-        <div class="tab-content" id="softrps">
+        <div class="tab-content product-section-panel" id="softrps">
           <div class="product-info">
             <span class="product-tag">FISCAL & FATURAMENTO</span>
             <h3>SoftRPS</h3>
-            <p class="product-desc">Geração automatizada de Recibo Provisório de Serviços (RPS). Integrado diretamente com as prefeituras locais.</p>
-            <div class="product-benefit">
-              <p class="product-benefit-label">Benefício Principal</p>
-              <p class="product-benefit-val">Garante conformidade fiscal integral para sua rede sem sobrecarregar a velocidade de atendimento na pista.</p>
-            </div>
-            <p class="product-features-title">Recursos Técnicos</p>
-            <div class="product-features">
-              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Integração com mais de 300 prefeituras</div>
-              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Envio automático ou manual</div>
-              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Conciliação em lote no fim do expediente</div>
-              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Contingenêcia offline de emissão de RPS</div>
+            <p class="product-desc">Automatize a geração, emissão e gestão de Recibos Provisórios de Serviços com integração fiscal preparada para redes de estacionamento, reduzindo rotinas manuais e mantendo a operação em conformidade.</p>
+            <p class="product-features-title softrps-features-title">Diferenciais Técnicos</p>
+            <div class="product-features softrps-features" aria-label="Diferenciais técnicos do SoftRPS">
+              <div class="product-feature-item erpcase-feature-card softrps-feature-card" style="--feature-index: 0">
+                <i class="fa-solid fa-file-invoice"></i>
+                <div>
+                  <h4>Emissão fiscal automatizada</h4>
+                  <p>Gere RPS de forma automática ou manual, com dados operacionais consolidados para agilizar a rotina fiscal das unidades.</p>
+                </div>
+              </div>
+              <div class="product-feature-item erpcase-feature-card softrps-feature-card" style="--feature-index: 1">
+                <i class="fa-solid fa-building-columns"></i>
+                <div>
+                  <h4>Integração com prefeituras</h4>
+                  <p>Conecte a emissão de serviços às exigências municipais, mantendo rastreabilidade e padronização entre diferentes localidades.</p>
+                </div>
+              </div>
+              <div class="product-feature-item erpcase-feature-card softrps-feature-card" style="--feature-index: 2">
+                <i class="fa-solid fa-layer-group"></i>
+                <div>
+                  <h4>Conciliação e envio em lote</h4>
+                  <p>Organize documentos por unidade, período e movimento, facilitando o envio em lote e o fechamento fiscal do expediente.</p>
+                </div>
+              </div>
+              <div class="product-feature-item erpcase-feature-card softrps-feature-card" style="--feature-index: 3">
+                <i class="fa-solid fa-shield-halved"></i>
+                <div>
+                  <h4>Conformidade sem travar a via</h4>
+                  <p>Mantenha o atendimento fluido enquanto o sistema registra, valida e prepara as informações fiscais com segurança.</p>
+                </div>
+              </div>
             </div>
             <a href="#contato" class="btn btn-outline-glow">Quero uma Demonstração</a>
           </div>
-          <div class="product-visual">
-            <img src="assets/images/varejo_lojas.png" alt="SoftRPS Emissão Fiscal Automática">
+          <div class="product-visual softrps-product-visual">
+            <img src="assets/images/Gestao_RPS.jpg" alt="SoftRPS gestão fiscal e emissão de RPS">
           </div>
         </div>
-
         <!-- 7. ParkFlow -->
-        <div class="tab-content" id="parkflow">
+        <div class="tab-content product-section-panel" id="parkflow">
           <div class="product-info">
             <span class="product-tag">DIRECIONAMENTO DE VAGAS & FLUXO</span>
             <h3>ParkFlow</h3>
-            <p class="product-desc">Leitura de Placas com LPR através de Totem de Leitura com Display de LDF ou Câmeras.</p>
-            <div class="product-benefit">
-              <p class="product-benefit-label">Benefício Principal</p>
-              <p class="product-benefit-val">Torna a operação fluida e segura, reduzindo o tempo de acesso, registrando a placa direto no ticket ou permitindo operação ticketless.</p>
-            </div>
-            <p class="product-features-title">Recursos Técnicos</p>
-            <div class="product-features">
-              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Processamento embarcado</div>
-              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Câmeras de alta precisão</div>
-              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Painéis informativos de LED de alto brilho</div>
-              <div class="product-feature-item"><i class="fa-solid fa-check"></i> Integrado ao ecossistema SOFTPark</div>
+            <p class="product-desc">Leitura de Placas com LPR através de Totem de Leitura com Display de LDF ou Câmeras tornando a operação fluida e segura, reduzindo o tempo de acesso, registrando a placa direto no ticket e permitindo operação ticketless.</p>
+            <p class="product-features-title parkflow-features-title">Diferenciais Técnicos</p>
+            <div class="product-features parkflow-features" aria-label="Diferenciais técnicos do ParkFlow">
+              <div class="product-feature-item erpcase-feature-card parkflow-feature-card" style="--feature-index: 0">
+                <i class="fa-solid fa-camera"></i>
+                <div>
+                  <h4>Leitura de placas com LPR</h4>
+                  <p>Capture e identifique placas automaticamente na via, vinculando o veículo ao ticket, cadastro ou evento operacional.</p>
+                </div>
+              </div>
+              <div class="product-feature-item erpcase-feature-card parkflow-feature-card" style="--feature-index: 1">
+                <i class="fa-solid fa-gauge-high"></i>
+                <div>
+                  <h4>Fluxo de acesso mais rápido</h4>
+                  <p>Reduza filas e tempo de permanência na cancela com reconhecimento visual e validação integrada ao ecossistema Softcase.</p>
+                </div>
+              </div>
+              <div class="product-feature-item erpcase-feature-card parkflow-feature-card" style="--feature-index: 2">
+                <i class="fa-solid fa-display"></i>
+                <div>
+                  <h4>Totem e display de orientação</h4>
+                  <p>Informe status, placa e liberação diretamente na via, entregando uma experiência clara para o motorista.</p>
+                </div>
+              </div>
+              <div class="product-feature-item erpcase-feature-card parkflow-feature-card" style="--feature-index: 3">
+                <i class="fa-solid fa-network-wired"></i>
+                <div>
+                  <h4>Integração nativa com a operação</h4>
+                  <p>Conecte LPR, automação, gestão e auditoria para manter o controle operacional completo em tempo real.</p>
+                </div>
+              </div>
             </div>
             <a href="#contato" class="btn btn-outline-glow">Quero uma Demonstração</a>
           </div>
-          <div class="product-visual">
-            <img src="assets/images/modernizar_operacao.png" alt="ParkFlow Gestão de Vagas Inteligentes">
+          <div class="product-visual parkflow-product-visual">
+            <img src="assets/images/Leitura_de_palacas_LPR.jpg" alt="ParkFlow leitura de placas LPR em estacionamento">
           </div>
         </div>
-
         <!-- 8. SoftAuditor -->
         <div class="tab-content" id="softauditor">
           <div class="product-info">

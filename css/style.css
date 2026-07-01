@@ -947,19 +947,26 @@ section {
   box-shadow: 0 0 15px rgba(10, 132, 255, 0.08);
 }
 
-/* Conteúdo da Tab Ativa */
+/* Conteudo dos produtos em sequencia */
 .tab-content {
   display: none;
   opacity: 0;
   transition: opacity var(--transition-normal) ease-in-out;
 }
 
-.tab-content.active {
+.product-section-panel {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
-  align-items: center;
+  align-items: stretch;
   opacity: 1;
+  scroll-margin-top: calc(var(--header-height) + 2rem);
+}
+
+.product-section-panel + .product-section-panel {
+  margin-top: 7rem;
+  padding-top: 7rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .product-info h3 {
@@ -1170,6 +1177,16 @@ section {
   animation-delay: calc(0.45s + var(--feature-index) * 0.24s);
 }
 
+.product-section-panel .erpcase-feature-card {
+  animation: erpcase-feature-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--feature-index) * 0.12s);
+}
+
+.product-section-panel .erpcase-feature-card i {
+  animation: erpcase-icon-pop 3.8s ease-in-out infinite;
+  animation-delay: calc(0.45s + var(--feature-index) * 0.24s);
+}
+
 #erpcase .ai-visual {
   display: flex;
 }
@@ -1200,43 +1217,57 @@ section {
 }
 
 .mobile-features-title,
-.softpay-features-title {
+.softpay-features-title,
+.softrps-features-title,
+.parkflow-features-title {
   color: var(--color-secondary);
 }
 
 .mobile-features,
-.softpay-features {
+.softpay-features,
+.softrps-features,
+.parkflow-features {
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
   margin-bottom: 2.5rem;
 }
 
 #mobile.tab-content.active .mobile-feature-card,
-#softpay.tab-content.active .softpay-feature-card {
+#softpay.tab-content.active .softpay-feature-card,
+#softrps.tab-content.active .softrps-feature-card,
+#parkflow.tab-content.active .parkflow-feature-card {
   animation: erpcase-feature-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   animation-delay: calc(var(--feature-index) * 0.12s);
 }
 
 #mobile.tab-content.active .mobile-feature-card i,
-#softpay.tab-content.active .softpay-feature-card i {
+#softpay.tab-content.active .softpay-feature-card i,
+#softrps.tab-content.active .softrps-feature-card i,
+#parkflow.tab-content.active .parkflow-feature-card i {
   animation: erpcase-icon-pop 3.8s ease-in-out infinite;
   animation-delay: calc(0.45s + var(--feature-index) * 0.24s);
 }
 
 #mobile.tab-content.active,
-#softpay.tab-content.active {
+#softpay.tab-content.active,
+#softrps.tab-content.active,
+#parkflow.tab-content.active {
   align-items: stretch;
 }
 
 .mobile-product-visual,
-.softpay-product-visual {
+.softpay-product-visual,
+.softrps-product-visual,
+.parkflow-product-visual {
   align-self: stretch;
   height: auto;
   min-height: 100%;
 }
 
 .mobile-product-visual img,
-.softpay-product-visual img {
+.softpay-product-visual img,
+.softrps-product-visual img,
+.parkflow-product-visual img {
   object-position: center;
 }
 /* Mockups de Imagem dos Produtos */
@@ -2151,7 +2182,13 @@ textarea.form-control {
   #mobile.tab-content.active .mobile-feature-card,
   #mobile.tab-content.active .mobile-feature-card i,
   #softpay.tab-content.active .softpay-feature-card,
-  #softpay.tab-content.active .softpay-feature-card i {
+  #softpay.tab-content.active .softpay-feature-card i,
+  #softrps.tab-content.active .softrps-feature-card,
+  #softrps.tab-content.active .softrps-feature-card i,
+  #parkflow.tab-content.active .parkflow-feature-card,
+  #parkflow.tab-content.active .parkflow-feature-card i,
+  .product-section-panel .erpcase-feature-card,
+  .product-section-panel .erpcase-feature-card i {
     animation: none;
   }
 
@@ -2196,6 +2233,7 @@ textarea.form-control {
   }
   
   .ecosystem-container,
+  .product-section-panel,
   .tab-content.active,
   .ai-grid,
   .contact-grid {
@@ -2241,7 +2279,9 @@ textarea.form-control {
   }
 
   #mobile .mobile-product-visual,
-  #softpay .softpay-product-visual {
+  #softpay .softpay-product-visual,
+  #softrps .softrps-product-visual,
+  #parkflow .parkflow-product-visual {
     min-height: 420px;
     height: 420px;
   }
@@ -2251,7 +2291,9 @@ textarea.form-control {
   #erpcase .erpcase-features,
   #softpark .softpark-features,
   #mobile .mobile-features,
-  #softpay .softpay-features {
+  #softpay .softpay-features,
+  #softrps .softrps-features,
+  #parkflow .parkflow-features {
     grid-template-columns: 1fr;
   }
 
@@ -2270,7 +2312,9 @@ textarea.form-control {
   }
 
   #mobile .mobile-product-visual,
-  #softpay .softpay-product-visual {
+  #softpay .softpay-product-visual,
+  #softrps .softrps-product-visual,
+  #parkflow .parkflow-product-visual {
     min-height: 320px;
     height: 320px;
   }

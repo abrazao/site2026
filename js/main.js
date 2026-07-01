@@ -161,30 +161,39 @@ function initDashboardSimulator() {
    ========================================================================== */
 function initProductTabs() {
   const tabButtons = document.querySelectorAll('.tab-btn');
-  const tabContents = document.querySelectorAll('.tab-content');
-  
+  const productSections = Array.from(document.querySelectorAll('.product-section-panel'));
+
+  if (!tabButtons.length || !productSections.length) return;
+
+  function setActiveButton(targetId) {
+    tabButtons.forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-tab') === targetId);
+    });
+  }
+
   tabButtons.forEach(button => {
     button.addEventListener('click', () => {
-      const targetTab = button.getAttribute('data-tab');
-      
-      // Remove classes active
-      tabButtons.forEach(btn => btn.classList.remove('active'));
-      tabContents.forEach(content => {
-        content.classList.remove('active');
-        content.style.display = 'none';
-      });
-      
-      // Adiciona classes active no botão e container alvo
-      button.classList.add('active');
-      const targetContent = document.getElementById(targetTab);
-      
-      // Animação suave de transição
-      targetContent.style.display = 'grid';
-      setTimeout(() => {
-        targetContent.classList.add('active');
-      }, 50);
+      const targetId = button.getAttribute('data-tab');
+      const targetSection = document.getElementById(targetId);
+      if (!targetSection) return;
+
+      setActiveButton(targetId);
+      targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
+
+  const observer = new IntersectionObserver((entries) => {
+    const visibleEntry = entries
+      .filter(entry => entry.isIntersecting)
+      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+    if (visibleEntry) setActiveButton(visibleEntry.target.id);
+  }, {
+    threshold: [0.25, 0.5, 0.75],
+    rootMargin: '-25% 0px -55% 0px'
+  });
+
+  productSections.forEach(section => observer.observe(section));
 }
 
 /* ==========================================================================
