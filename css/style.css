@@ -380,7 +380,7 @@ section {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: 4rem;
-  align-items: center;
+  align-items: stretch;
 }
 
 .hero-content {
@@ -444,16 +444,21 @@ section {
 /* Painel Simulador do Dashboard (Lado Direito do Hero) */
 .hero-visual {
   position: relative;
+  display: flex;
+  align-items: stretch;
 }
 
 .mockup-dashboard {
   width: 100%;
+  min-height: 100%;
   border-radius: 20px;
   padding: 1.5rem;
   background: rgba(12, 16, 31, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.07);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .mockup-header {
@@ -501,7 +506,9 @@ section {
 .mockup-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto minmax(320px, 1fr);
   gap: 1rem;
+  flex: 1;
   margin-bottom: 0;
 }
 
@@ -542,7 +549,8 @@ section {
 .mockup-parking-anim {
   grid-column: span 2;
   position: relative;
-  height: 180px;
+  min-height: 320px;
+  height: 100%;
   border-radius: var(--border-radius-sm);
   overflow: hidden;
   background-image: url('../assets/images/softpark_lpr_totem.jpg');
@@ -879,6 +887,13 @@ section {
   transform: rotateY(360deg);
 }
 
+.barrier-icon,
+.mobile-device-icon {
+  width: 34px;
+  height: 34px;
+  display: block;
+}
+
 .differential-card p {
   font-size: 0.9rem;
   line-height: 1.6;
@@ -1022,6 +1037,208 @@ section {
   color: var(--color-accent);
 }
 
+.erpcase-tab-showcase,
+.softpark-tab-showcase {
+  grid-column: 1 / -1;
+  width: 100%;
+  align-items: stretch;
+}
+
+.ecosystem-features-title {
+  color: var(--color-secondary);
+  margin-bottom: 1.25rem;
+}
+
+.softpark-features {
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+#softpark.tab-content.active .softpark-feature-card {
+  animation: erpcase-feature-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--feature-index) * 0.12s);
+}
+
+#softpark.tab-content.active .softpark-feature-card i {
+  animation: erpcase-icon-pop 3.8s ease-in-out infinite;
+  animation-delay: calc(0.45s + var(--feature-index) * 0.24s);
+}
+
+#softpark .ai-visual {
+  display: flex;
+  min-height: 100%;
+}
+
+.softpark-media-stage {
+  align-self: stretch;
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+}
+
+.softpark-media-stage .lpr-simulator {
+  height: 100%;
+  min-height: 100%;
+}
+
+.softpark-media-stage .lpr-video-feed {
+  min-height: 0;
+  flex: 1 1 320px;
+}
+
+.softpark-media-stage .lpr-meta {
+  padding: 1rem 1.15rem;
+}
+
+.softpark-media-stage .lpr-log {
+  padding: 0.9rem 1.15rem 1rem;
+}
+
+.softpark-lpr-log-list {
+  height: 128px;
+}
+
+.softpark-tab-cta {
+  margin-top: 0.25rem;
+}
+
+#erpcase .ai-content {
+  min-width: 0;
+}
+
+#erpcase .ai-intro {
+  margin-bottom: 2.5rem;
+}
+
+.erpcase-features {
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.erpcase-feature-card {
+  align-items: flex-start;
+  gap: 1rem;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--text-main);
+  overflow: visible;
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.erpcase-feature-card i {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(48, 209, 88, 0.1);
+  border: 1px solid rgba(48, 209, 88, 0.18);
+  color: var(--color-accent);
+  font-size: 1.15rem;
+  transform-origin: center;
+}
+
+.erpcase-feature-card h4 {
+  font-size: 1rem;
+  line-height: 1.25;
+  color: #ffffff;
+  margin-bottom: 0.35rem;
+}
+
+.erpcase-feature-card p {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+#erpcase.tab-content.active .erpcase-feature-card {
+  animation: erpcase-feature-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--feature-index) * 0.12s);
+}
+
+#erpcase.tab-content.active .erpcase-feature-card i {
+  animation: erpcase-icon-pop 3.8s ease-in-out infinite;
+  animation-delay: calc(0.45s + var(--feature-index) * 0.24s);
+}
+
+#erpcase .ai-visual {
+  display: flex;
+}
+
+.erpcase-media-stage {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  min-height: 100%;
+  border: 1px solid rgba(10, 132, 255, 0.24);
+  border-radius: 24px;
+  background: #050916;
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.56), 0 0 36px rgba(10, 132, 255, 0.16);
+  line-height: 0;
+}
+
+.erpcase-performance-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  filter: saturate(1.08) contrast(1.04);
+}
+
+.erpcase-tab-cta {
+  margin-top: 0.25rem;
+}
+
+.mobile-features-title,
+.softpay-features-title {
+  color: var(--color-secondary);
+}
+
+.mobile-features,
+.softpay-features {
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+#mobile.tab-content.active .mobile-feature-card,
+#softpay.tab-content.active .softpay-feature-card {
+  animation: erpcase-feature-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--feature-index) * 0.12s);
+}
+
+#mobile.tab-content.active .mobile-feature-card i,
+#softpay.tab-content.active .softpay-feature-card i {
+  animation: erpcase-icon-pop 3.8s ease-in-out infinite;
+  animation-delay: calc(0.45s + var(--feature-index) * 0.24s);
+}
+
+#mobile.tab-content.active,
+#softpay.tab-content.active {
+  align-items: stretch;
+}
+
+.mobile-product-visual,
+.softpay-product-visual {
+  align-self: stretch;
+  height: auto;
+  min-height: 100%;
+}
+
+.mobile-product-visual img,
+.softpay-product-visual img {
+  object-position: center;
+}
 /* Mockups de Imagem dos Produtos */
 .product-visual {
   position: relative;
@@ -1053,6 +1270,57 @@ section {
   max-height: 95%;
 }
 
+.product-lpr-visual {
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 0;
+}
+
+.product-lpr-visual:hover img {
+  transform: none;
+}
+
+.product-lpr-visual .lpr-simulator {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: inherit;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-lpr-visual .lpr-video-feed {
+  flex: 1 1 auto;
+  min-height: 170px;
+}
+
+.product-lpr-visual .lpr-meta {
+  padding: 0.85rem 1rem;
+}
+
+.product-lpr-visual .lpr-meta-grid {
+  gap: 0.75rem;
+}
+
+.product-lpr-visual .lpr-plate-meta {
+  grid-column: span 2;
+}
+
+.product-lpr-visual .lpr-plate-display {
+  height: 40px;
+  font-size: 1.35rem;
+  padding: 0.35rem 0.75rem;
+}
+
+.product-lpr-visual .lpr-log {
+  padding: 0.75rem 1rem;
+}
+
+.product-lpr-visual .lpr-log-list {
+  height: 44px;
+}
+
 /* ==========================================================================
    6. DESTAQUE PARKVISION360 (IA)
    ========================================================================== */
@@ -1066,6 +1334,24 @@ section {
   grid-template-columns: 0.95fr 1.05fr;
   gap: 5rem;
   align-items: center;
+}
+
+#softpark .softpark-tab-showcase.ai-grid {
+  align-items: stretch;
+}
+
+#softpark .softpark-media-stage.product-visual {
+  height: 100%;
+  min-height: 100%;
+}
+
+.parkvision-tab-showcase {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.parkvision-tab-cta {
+  margin-top: 2rem;
 }
 
 .ai-badge {
@@ -1197,16 +1483,18 @@ section {
 
 .lpr-label-box {
   position: absolute;
-  top: -24px;
-  left: -2px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: var(--color-accent);
   color: var(--text-dark);
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 800;
-  padding: 1px 6px;
+  padding: 2px 6px;
   white-space: nowrap;
-  border-radius: 2px 2px 0 0;
+  border-radius: 3px;
+  box-shadow: 0 0 10px rgba(48, 209, 88, 0.45);
 }
 
 .lpr-meta {
@@ -1284,6 +1572,35 @@ section {
   animation: log-fade-in 0.4s ease-out forwards;
 }
 
+.ai-visual {
+  min-width: 0;
+}
+
+.parkvision-media-stage {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  border: 1px solid rgba(10, 132, 255, 0.24);
+  border-radius: 24px;
+  background: #050916;
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.56), 0 0 36px rgba(10, 132, 255, 0.16);
+  direction: ltr;
+  line-height: 0;
+}
+
+.parkvision-performance-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.12) contrast(1.05);
+}
+
+@media (max-width: 768px) {
+  .parkvision-media-stage {
+    border-radius: 18px;
+  }
+}
 /* ==========================================================================
    7. PARA QUEM É
    ========================================================================== */
@@ -1782,6 +2099,33 @@ textarea.form-control {
   to { opacity: 1; transform: scale(1); }
 }
 
+@keyframes erpcase-feature-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes erpcase-icon-pop {
+  0%, 64%, 100% {
+    transform: translateY(0) scale(1) rotate(0deg);
+    color: var(--color-accent);
+    box-shadow: none;
+  }
+  12% {
+    transform: translateY(-2px) scale(1.12) rotate(-4deg);
+    color: var(--color-secondary);
+    box-shadow: 0 0 18px rgba(0, 242, 254, 0.22);
+  }
+  24% {
+    transform: translateY(0) scale(1.04) rotate(3deg);
+    color: var(--color-accent);
+  }
+}
+
 .scroll-reveal {
   opacity: 0;
   transform: translateY(30px);
@@ -1799,6 +2143,24 @@ textarea.form-control {
 .delay-300 { transition-delay: 300ms; }
 .delay-400 { transition-delay: 400ms; }
 
+@media (prefers-reduced-motion: reduce) {
+  #erpcase.tab-content.active .erpcase-feature-card,
+  #erpcase.tab-content.active .erpcase-feature-card i,
+  #softpark.tab-content.active .softpark-feature-card,
+  #softpark.tab-content.active .softpark-feature-card i,
+  #mobile.tab-content.active .mobile-feature-card,
+  #mobile.tab-content.active .mobile-feature-card i,
+  #softpay.tab-content.active .softpay-feature-card,
+  #softpay.tab-content.active .softpay-feature-card i {
+    animation: none;
+  }
+
+
+  .erpcase-feature-card {
+    opacity: 1;
+    transform: none;
+  }
+}
 /* ==========================================================================
    MEDIA QUERIES (RESPONSIVIDADE)
    ========================================================================== */
@@ -1854,7 +2216,66 @@ textarea.form-control {
   .footer-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-}@media (max-width: 1024px) {
+}
+
+@media (max-width: 1200px) {
+  .erpcase-tab-showcase {
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  #erpcase .erpcase-tab-showcase,
+  #softpark .softpark-tab-showcase {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .erpcase-media-stage {
+    min-height: 380px;
+  }
+
+  #softpark .softpark-media-stage {
+    min-height: 520px;
+    height: 520px;
+  }
+
+  #mobile .mobile-product-visual,
+  #softpay .softpay-product-visual {
+    min-height: 420px;
+    height: 420px;
+  }
+}
+
+@media (max-width: 640px) {
+  #erpcase .erpcase-features,
+  #softpark .softpark-features,
+  #mobile .mobile-features,
+  #softpay .softpay-features {
+    grid-template-columns: 1fr;
+  }
+
+  .erpcase-media-stage {
+    min-height: 300px;
+    border-radius: 18px;
+  }
+
+  #softpark .softpark-media-stage {
+    min-height: 420px;
+    height: 420px;
+  }
+
+  .softpark-lpr-log-list {
+    height: 94px;
+  }
+
+  #mobile .mobile-product-visual,
+  #softpay .softpay-product-visual {
+    min-height: 320px;
+    height: 320px;
+  }
+}
+@media (max-width: 1024px) {
   :root {
     --header-height: 70px;
   }

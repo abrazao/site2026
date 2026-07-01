@@ -191,25 +191,19 @@ function initProductTabs() {
    7. AI LPR SIMULATOR (PARKVISION360 DESTAQUE)
    ========================================================================== */
 function initLprSimulator() {
-  const lprVideo = document.getElementById('lpr-video');
-  const lprBox = document.getElementById('lpr-box');
-  const lprStatusLabel = document.getElementById('lpr-status-label');
-  const lprConfidence = document.getElementById('lpr-confidence');
-  const lprPlateDisplay = document.getElementById('lpr-plate-display');
-  const lprOwner = document.getElementById('lpr-owner');
-  const lprCamName = document.getElementById('lpr-cam-name');
-  const lprLogList = document.getElementById('lpr-log-list');
-  
+  const simulators = document.querySelectorAll('.lpr-simulator');
+  if (!simulators.length) return;
+
   // Ciclos da câmera de inteligência artificial baseados nas fotos oficiais
   const lprCycles = [
     {
       image: 'assets/images/lpr_estacionamento.jpg',
-      plate: 'FEG-7623',
+      plate: 'UZO-0F78',
       owner: 'VW VIRTUS - MENSALISTA',
       camera: 'ENTRADA PRINCIPAL 01',
       confidence: '99.8%',
       status: 'MENSALISTA LIBERADO',
-      box: { top: '100px', left: '160px', width: '135px', height: '48px' }
+      box: { top: '121px', left: '250px', width: '82px', height: '30px' }
     },
     {
       image: 'assets/images/hero-real.png',
@@ -218,7 +212,7 @@ function initLprSimulator() {
       camera: 'ACESSO SUL 02',
       confidence: '99.4%',
       status: 'TICKET IMPRESSO - ENTRADA',
-      box: { top: '130px', left: '210px', width: '120px', height: '44px' }
+      box: { top: '110px', left: '164px', width: '88px', height: '32px' }
     },
     {
       image: 'assets/images/cancelas_detalhe.jpg',
@@ -236,66 +230,77 @@ function initLprSimulator() {
       camera: 'ENTRADA PRINCIPAL 02',
       confidence: '99.7%',
       status: 'MENSALISTA LIBERADO',
-      box: { top: '110px', left: '180px', width: '140px', height: '50px' }
+      box: { top: '128px', left: '245px', width: '88px', height: '32px' }
     }
   ];
-  
-  let currentCycle = 0;
-  
-  setInterval(() => {
-    // Transiciona para o próximo ciclo
-    currentCycle = (currentCycle + 1) % lprCycles.length;
-    const cycle = lprCycles[currentCycle];
-    
-    // Status visual de Processando Placa
-    lprStatusLabel.textContent = 'LPR: DETECTANDO...';
-    lprStatusLabel.style.background = 'var(--color-primary)';
-    lprStatusLabel.style.color = '#ffffff';
-    lprBox.style.borderColor = 'var(--color-primary)';
-    lprBox.style.boxShadow = '0 0 15px var(--color-primary)';
-    
-    // Altera a imagem de fundo de forma suave
-    lprVideo.style.backgroundImage = `url('${cycle.image}')`;
-    
-    // Move a bounding box com delay simulando tempo de processamento da IA
-    setTimeout(() => {
-      lprBox.style.top = cycle.box.top;
-      lprBox.style.left = cycle.box.left;
-      lprBox.style.width = cycle.box.width;
-      lprBox.style.height = cycle.box.height;
-      
-      // Atualiza os metadados da detecção após processar
-      setTimeout(() => {
-        lprStatusLabel.textContent = cycle.status;
-        lprStatusLabel.style.background = 'var(--color-accent)';
-        lprStatusLabel.style.color = 'var(--text-dark)';
-        lprBox.style.borderColor = 'var(--color-accent)';
-        lprBox.style.boxShadow = '0 0 15px var(--color-accent)';
-        
-        lprConfidence.textContent = cycle.confidence;
-        lprPlateDisplay.textContent = cycle.plate;
-        lprOwner.textContent = cycle.owner;
-        lprCamName.textContent = cycle.camera;
-        
-        // Adiciona ao Log de IA
-        const timeString = new Date().toLocaleTimeString('pt-BR');
-        const logItem = document.createElement('div');
-        logItem.className = 'lpr-log-item';
-        logItem.innerHTML = `
-          <span><span style="color:var(--color-secondary)">[${timeString}]</span> ${cycle.plate} - ${cycle.status}</span>
-          <span style="color:var(--color-accent)">OK</span>
-        `;
-        lprLogList.insertBefore(logItem, lprLogList.firstChild);
-        
-        if (lprLogList.children.length > 2) {
-          lprLogList.removeChild(lprLogList.lastChild);
-        }
-      }, 400);
-    }, 600);
-    
-  }, 5000);
-}
 
+  simulators.forEach((simulator, simulatorIndex) => {
+    const lprVideo = simulator.querySelector('.lpr-video-feed');
+    const lprBox = simulator.querySelector('.lpr-box');
+    const lprStatusLabel = simulator.querySelector('.lpr-label-box');
+    const lprConfidence = simulator.querySelector('.lpr-confidence, #lpr-confidence');
+    const lprPlateDisplay = simulator.querySelector('.lpr-plate-display');
+    const lprOwner = simulator.querySelector('.lpr-owner, #lpr-owner');
+    const lprCamName = simulator.querySelector('.lpr-cam-name, #lpr-cam-name');
+    const lprLogList = simulator.querySelector('.lpr-log-list');
+
+    if (!lprVideo || !lprBox || !lprStatusLabel || !lprConfidence || !lprPlateDisplay || !lprCamName || !lprLogList) return;
+
+    let currentCycle = simulatorIndex % lprCycles.length;
+
+    setInterval(() => {
+      // Transiciona para o próximo ciclo
+      currentCycle = (currentCycle + 1) % lprCycles.length;
+      const cycle = lprCycles[currentCycle];
+
+      // Status visual de Processando Placa
+      lprStatusLabel.textContent = cycle.plate;
+      lprStatusLabel.style.background = 'var(--color-primary)';
+      lprStatusLabel.style.color = '#ffffff';
+      lprBox.style.borderColor = 'var(--color-primary)';
+      lprBox.style.boxShadow = '0 0 15px var(--color-primary)';
+
+      // Altera a imagem de fundo de forma suave
+      lprVideo.style.backgroundImage = `url('${cycle.image}')`;
+
+      // Move a bounding box com delay simulando tempo de processamento da IA
+      setTimeout(() => {
+        lprBox.style.top = cycle.box.top;
+        lprBox.style.left = cycle.box.left;
+        lprBox.style.width = cycle.box.width;
+        lprBox.style.height = cycle.box.height;
+
+        // Atualiza os metadados da detecção após processar
+        setTimeout(() => {
+          lprStatusLabel.textContent = cycle.plate;
+          lprStatusLabel.style.background = 'var(--color-accent)';
+          lprStatusLabel.style.color = 'var(--text-dark)';
+          lprBox.style.borderColor = 'var(--color-accent)';
+          lprBox.style.boxShadow = '0 0 15px var(--color-accent)';
+
+          lprConfidence.textContent = cycle.confidence;
+          lprPlateDisplay.textContent = cycle.plate;
+          if (lprOwner) lprOwner.textContent = cycle.owner;
+          lprCamName.textContent = cycle.camera;
+
+          // Adiciona ao Log de IA
+          const timeString = new Date().toLocaleTimeString('pt-BR');
+          const logItem = document.createElement('div');
+          logItem.className = 'lpr-log-item';
+          logItem.innerHTML = `
+            <span><span style="color:var(--color-secondary)">[${timeString}]</span> ${cycle.plate} - ${cycle.status}</span>
+            <span style="color:var(--color-accent)">OK</span>
+          `;
+          lprLogList.insertBefore(logItem, lprLogList.firstChild);
+
+          if (lprLogList.children.length > 2) {
+            lprLogList.removeChild(lprLogList.lastChild);
+          }
+        }, 400);
+      }, 600);
+    }, 5000);
+  });
+}
 /* ==========================================================================
    8. FORMULÁRIO B2B COM FEEDBACK DE SUCESSO
    ========================================================================== */
