@@ -2,7 +2,7 @@
    SOFTCASE - LÓGICA E INTERATIVIDADE (VANILLA JS)
    ========================================================================== */
 
-document.addEventListener('DOMContentLoaded', () => {
+function initSite() {
   initNavbar();
   initMobileMenu();
   initScrollAnimations();
@@ -11,7 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
   initLprSimulator();
   initContactForm();
   initScrollSpy();
-});
+  initNetworkParking3D();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initSite);
+} else {
+  initSite();
+}
 
 /* ==========================================================================
    1. NAVBAR EFFECTS & SCROLL PROGRESS
@@ -315,28 +322,56 @@ function initLprSimulator() {
    ========================================================================== */
 function initContactForm() {
   const form = document.getElementById('contact-form');
-  const successState = document.getElementById('form-success');
+  const statusMessage = document.getElementById('contact-form-status');
   
   if (!form) return;
   
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    // Botão de envio entra em estado de Loading
     const submitBtn = form.querySelector('.form-submit-btn');
     const originalText = submitBtn.innerHTML;
+    const formData = new FormData(form);
+    const payload = Object.fromEntries(formData.entries());
+
+    if (statusMessage) {
+      statusMessage.className = 'form-status-message';
+      statusMessage.textContent = '';
+    }
+
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando solicitação...';
-    
-    // Simula requisição de API com delay de 1.5s
-    setTimeout(() => {
-      // Oculta formulário e exibe tela de sucesso
-      form.style.display = 'none';
-      successState.style.display = 'flex';
-      
-      // Rola a visualização para o topo do card de forma suave
-      successState.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 1500);
+    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando mensagem...';
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        const message = result.error === 'SMTP_NOT_CONFIGURED'
+          ? 'Envio de e-mail ainda nao configurado no servidor. Configure o SMTP para ativar o formulario.'
+          : 'Nao foi possivel enviar a mensagem. Tente novamente em alguns instantes.';
+        throw new Error(message);
+      }
+
+      form.reset();
+      if (statusMessage) {
+        statusMessage.textContent = 'mensagem enviada com sucesso';
+        statusMessage.classList.add('is-success');
+        statusMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    } catch (error) {
+      if (statusMessage) {
+        statusMessage.textContent = error.message || 'Nao foi possivel enviar a mensagem. Tente novamente em alguns instantes.';
+        statusMessage.classList.add('is-error');
+      }
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalText;
+    }
   });
 }
 
@@ -352,3 +387,218 @@ window.resetFormState = function() {
   submitBtn.disabled = false;
   submitBtn.innerHTML = 'Solicitar demonstração <i class="fa-solid fa-arrow-right"></i>';
 };
+/* ==========================================================================
+   9. ANIMACAO 3D - REDES DE ESTACIONAMENTO
+   ========================================================================== */
+function initNetworkParking3D() {
+  const container = document.querySelector('[data-network-parking-3d]');
+  const canvas = container?.querySelector('.network-parking-canvas');
+
+  if (!container || !canvas || !window.THREE) {
+    if (container) container.classList.add('three-unavailable');
+    return;
+  }
+
+  const THREE = window.THREE;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
+  const clock = new THREE.Clock();
+  const animatedObjects = [];
+  const cars = [];
+  const pulses = [];
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setClearColor(0x000000, 0);
+
+  camera.position.set(0, 7.6, 8.6);
+  camera.lookAt(0, 0, 0);
+
+  scene.add(new THREE.HemisphereLight(0xdafcff, 0x081322, 1.6));
+
+  const keyLight = new THREE.DirectionalLight(0xffffff, 1.7);
+  keyLight.position.set(3.8, 7.2, 4.6);
+  scene.add(keyLight);
+
+  const cyan = 0x00f2fe;
+  const blue = 0x0a84ff;
+  const white = 0xf6fbff;
+  const asphalt = new THREE.MeshStandardMaterial({ color: 0x111a27, roughness: 0.72, metalness: 0.05 });
+  const roadMat = new THREE.MeshStandardMaterial({ color: 0x1f2937, roughness: 0.65, metalness: 0.08 });
+  const laneMat = new THREE.MeshBasicMaterial({ color: 0xdff8ff, transparent: true, opacity: 0.72 });
+  const glowMat = new THREE.MeshBasicMaterial({ color: cyan, transparent: true, opacity: 0.28 });
+  const lotMat = new THREE.MeshStandardMaterial({ color: 0x10223d, roughness: 0.55, metalness: 0.12 });
+  const glassMat = new THREE.MeshStandardMaterial({ color: cyan, emissive: cyan, emissiveIntensity: 0.18, roughness: 0.3, metalness: 0.35 });
+
+  const ground = new THREE.Mesh(new THREE.BoxGeometry(9.8, 0.16, 5.6), asphalt);
+  ground.position.y = -0.1;
+  scene.add(ground);
+
+  const grid = new THREE.GridHelper(9.8, 14, 0x1f6b83, 0x163145);
+  grid.position.y = 0.01;
+  scene.add(grid);
+
+  function makeBox(width, height, depth, material, position) {
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), material);
+    mesh.position.set(position.x, position.y, position.z);
+    scene.add(mesh);
+    return mesh;
+  }
+
+  function makeRoad(x, z, length, rotation) {
+    const road = new THREE.Mesh(new THREE.BoxGeometry(length, 0.06, 0.42), roadMat);
+    road.position.set(x, 0.08, z);
+    road.rotation.y = rotation;
+    scene.add(road);
+
+    for (let i = -2; i <= 2; i += 1) {
+      const lane = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.012, 0.035), laneMat);
+      lane.position.set(x + Math.cos(rotation) * i * 0.82, 0.13, z - Math.sin(rotation) * i * 0.82);
+      lane.rotation.y = rotation;
+      scene.add(lane);
+    }
+  }
+
+  function makeLot(x, z) {
+    const base = makeBox(1.15, 0.2, 0.86, lotMat, { x, y: 0.1, z });
+    makeBox(0.85, 0.62, 0.56, lotMat, { x, y: 0.51, z });
+
+    for (let i = -1; i <= 1; i += 1) {
+      const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.012, 0.62), laneMat);
+      stripe.position.set(x + i * 0.24, 0.84, z);
+      scene.add(stripe);
+    }
+
+    const beacon = makeBox(0.13, 0.13, 0.13, glassMat, { x, y: 0.94, z });
+    animatedObjects.push({ mesh: beacon, baseY: beacon.position.y, speed: 1.6 });
+    return base;
+  }
+
+  function makeGate(x, z, rotation) {
+    const post = makeBox(0.12, 0.55, 0.12, glassMat, { x, y: 0.35, z });
+    const arm = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.05, 0.05), new THREE.MeshStandardMaterial({ color: white, roughness: 0.35 }));
+    arm.position.set(x + Math.cos(rotation) * 0.35, 0.66, z - Math.sin(rotation) * 0.35);
+    arm.rotation.y = rotation;
+    scene.add(arm);
+    animatedObjects.push({ mesh: arm, gateRotation: rotation, speed: 2.2 });
+    return post;
+  }
+
+  function makeCar(color) {
+    const group = new THREE.Group();
+    const body = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.18, 0.26), new THREE.MeshStandardMaterial({ color, roughness: 0.34, metalness: 0.18 }));
+    const cabin = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.13, 0.2), new THREE.MeshStandardMaterial({ color: 0xdafcff, roughness: 0.18, metalness: 0.45 }));
+    const light = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.035, 0.18), new THREE.MeshBasicMaterial({ color: cyan }));
+    body.position.y = 0.18;
+    cabin.position.set(0.02, 0.33, 0);
+    light.position.set(0.26, 0.19, 0);
+    group.add(body, cabin, light);
+    scene.add(group);
+    return group;
+  }
+
+  function makePulse() {
+    const pulse = new THREE.Mesh(new THREE.SphereGeometry(0.07, 16, 16), new THREE.MeshBasicMaterial({ color: cyan, transparent: true, opacity: 0.86 }));
+    scene.add(pulse);
+    return pulse;
+  }
+
+  makeRoad(-2.35, -1.08, 4.6, -0.42);
+  makeRoad(2.35, -1.08, 4.6, 0.42);
+  makeRoad(0, 1.35, 5.1, 0);
+
+  makeLot(-3.8, -2.05);
+  makeLot(3.8, -2.05);
+  makeLot(0, 2.2);
+
+  makeGate(-2.92, -1.78, -0.42);
+  makeGate(2.92, -1.78, 0.42);
+  makeGate(-0.74, 1.35, 0);
+
+  const hubBase = makeBox(1.05, 0.3, 1.05, new THREE.MeshStandardMaterial({ color: 0x0b1b32, roughness: 0.35, metalness: 0.22 }), { x: 0, y: 0.15, z: 0 });
+  const hubCore = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.5, 0.86, 32), glassMat);
+  hubCore.position.set(0, 0.74, 0);
+  scene.add(hubCore);
+  animatedObjects.push({ mesh: hubCore, spin: true, speed: 0.45 });
+
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(1.0, 0.015, 8, 80), glowMat);
+  ring.position.y = 0.88;
+  ring.rotation.x = Math.PI / 2;
+  scene.add(ring);
+  animatedObjects.push({ mesh: ring, spin: true, speed: -0.65 });
+
+  cars.push({ mesh: makeCar(0xffffff), from: new THREE.Vector3(-3.8, 0, -2.05), to: new THREE.Vector3(-0.72, 0, -0.2), rot: -0.42, offset: 0 });
+  cars.push({ mesh: makeCar(0x0a84ff), from: new THREE.Vector3(3.8, 0, -2.05), to: new THREE.Vector3(0.72, 0, -0.2), rot: Math.PI + 0.42, offset: 0.33 });
+  cars.push({ mesh: makeCar(0x30d158), from: new THREE.Vector3(0, 0, 2.2), to: new THREE.Vector3(0, 0, 0.62), rot: Math.PI, offset: 0.66 });
+
+  pulses.push({ mesh: makePulse(), from: new THREE.Vector3(-3.55, 0.95, -1.72), to: new THREE.Vector3(0, 1.18, 0), offset: 0.12 });
+  pulses.push({ mesh: makePulse(), from: new THREE.Vector3(3.55, 0.95, -1.72), to: new THREE.Vector3(0, 1.18, 0), offset: 0.45 });
+  pulses.push({ mesh: makePulse(), from: new THREE.Vector3(0, 1.1, 1.9), to: new THREE.Vector3(0, 1.18, 0), offset: 0.78 });
+
+  function easeInOut(value) {
+    return value < 0.5 ? 2 * value * value : 1 - Math.pow(-2 * value + 2, 2) / 2;
+  }
+
+  function resize() {
+    const width = Math.max(container.clientWidth, 1);
+    const height = Math.max(container.clientHeight, 1);
+    renderer.setSize(width, height, false);
+    camera.aspect = width / height;
+    camera.position.set(0, width < 520 ? 8.6 : 7.6, width < 520 ? 9.8 : 8.6);
+    camera.lookAt(0, 0, 0);
+    camera.updateProjectionMatrix();
+  }
+
+  const resizeObserver = new ResizeObserver(resize);
+  resizeObserver.observe(container);
+  resize();
+
+  let isVisible = true;
+  const visibilityObserver = new IntersectionObserver((entries) => {
+    isVisible = entries.some((entry) => entry.isIntersecting);
+  }, { threshold: 0.05 });
+  visibilityObserver.observe(container);
+
+  function render() {
+    const elapsed = clock.getElapsedTime();
+
+    if (!prefersReducedMotion && isVisible) {
+      cars.forEach((car) => {
+        const loop = (elapsed * 0.22 + car.offset) % 1;
+        const progress = loop < 0.82 ? easeInOut(loop / 0.82) : 1;
+        car.mesh.position.lerpVectors(car.from, car.to, progress);
+        car.mesh.position.y = 0.08 + Math.sin(progress * Math.PI) * 0.03;
+        car.mesh.rotation.y = car.rot;
+        car.mesh.visible = loop < 0.92;
+      });
+
+      pulses.forEach((pulse) => {
+        const loop = (elapsed * 0.38 + pulse.offset) % 1;
+        pulse.mesh.position.lerpVectors(pulse.from, pulse.to, easeInOut(loop));
+        pulse.mesh.material.opacity = loop < 0.86 ? 0.88 - loop * 0.55 : 0;
+        const scale = 0.85 + loop * 1.4;
+        pulse.mesh.scale.setScalar(scale);
+      });
+
+      animatedObjects.forEach((item, index) => {
+        if (item.spin) item.mesh.rotation.y += item.speed * 0.01;
+        if (item.baseY) item.mesh.position.y = item.baseY + Math.sin(elapsed * item.speed + index) * 0.045;
+        if (item.gateRotation !== undefined) item.mesh.rotation.z = -Math.sin(elapsed * item.speed + index) * 0.34;
+      });
+
+      hubBase.rotation.y = Math.sin(elapsed * 0.45) * 0.08;
+    } else {
+      cars.forEach((car, index) => {
+        car.mesh.position.lerpVectors(car.from, car.to, index === 2 ? 0.45 : 0.58);
+        car.mesh.rotation.y = car.rot;
+        car.mesh.visible = true;
+      });
+    }
+
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
+  }
+
+  render();
+}
