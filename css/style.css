@@ -12,7 +12,7 @@
   --bg-secondary: #0c0f1d;
   --bg-card: rgba(18, 22, 41, 0.7);
   --bg-card-hover: rgba(26, 32, 59, 0.85);
-  
+
   --color-primary: #0A84FF;       /* Azul Tecnológico */
   --color-primary-rgb: 10, 132, 255;
   --color-secondary: #00F2FE;     /* Ciano Elétrico */
@@ -20,19 +20,19 @@
   --color-accent: #30D158;        /* Verde IA / Sucesso */
   --color-accent-rgb: 48, 209, 88;
   --color-warning: #FF9F0A;       /* Laranja Alerta */
-  
+
   --text-main: #F4F6F9;           /* Branco gelo */
   --text-muted: #8E9AA8;          /* Cinza claro secundário */
   --text-dark: #0A1128;
-  
+
   --border-color: rgba(255, 255, 255, 0.08);
   --border-glow: rgba(10, 132, 255, 0.2);
-  
+
   /* Fontes */
   --font-title: 'Outfit', sans-serif;
   --font-body: 'Inter', sans-serif;
   --font-mono: 'Share Tech Mono', monospace;
-  
+
   /* Efeitos e Transições */
   --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   --glow-shadow: 0 0 20px rgba(10, 132, 255, 0.35);
@@ -42,7 +42,7 @@
   --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   --border-radius: 16px;
   --border-radius-sm: 8px;
-  
+
   /* Layout */
   --header-height: 80px;
 }
@@ -154,7 +154,7 @@ section {
   width: 500px;
   height: 500px;
   top: 10%;
-  left: -150px;
+  left: 0;
 }
 
 .glow-cyan {
@@ -162,7 +162,7 @@ section {
   width: 450px;
   height: 450px;
   bottom: 20%;
-  right: -100px;
+  right: 0;
 }
 
 /* Botões Modernos */
@@ -1293,7 +1293,7 @@ section {
 
 .erpcase-feature-card i {
   flex: 0 0 auto;
-  width: 46px;
+  width: 58px;
   height: 46px;
   display: inline-flex;
   align-items: center;
@@ -1347,12 +1347,20 @@ section {
   position: relative;
   overflow: hidden;
   width: 100%;
-  min-height: 100%;
+  min-height: 540px;
+  aspect-ratio: 4 / 5;
   border: 1px solid rgba(10, 132, 255, 0.24);
   border-radius: 24px;
   background: #050916;
   box-shadow: 0 26px 60px rgba(0, 0, 0, 0.56), 0 0 36px rgba(10, 132, 255, 0.16);
   line-height: 0;
+  isolation: isolate;
+}
+
+.erpcase-image-stack {
+  position: absolute;
+  inset: 0;
+  min-height: 100%;
 }
 
 .erpcase-performance-image {
@@ -1362,6 +1370,120 @@ section {
   min-height: 100%;
   object-fit: cover;
   filter: saturate(1.08) contrast(1.04);
+}
+
+.erpcase-stack-image {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.05) translateY(10px);
+  animation: erpcase-image-cycle 18s ease-in-out infinite;
+}
+
+.erpcase-stack-image:nth-child(1) { animation-delay: 0s; }
+.erpcase-stack-image:nth-child(2) { animation-delay: 4.5s; }
+.erpcase-stack-image:nth-child(3) { animation-delay: 9s; }
+.erpcase-stack-image:nth-child(4) { animation-delay: 13.5s; }
+
+.erpcase-media-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(180deg, rgba(5, 9, 22, 0.04) 0%, transparent 34%, rgba(5, 9, 22, 0.26) 100%),
+    radial-gradient(circle at 18% 16%, rgba(0, 242, 254, 0.14), transparent 30%);
+  pointer-events: none;
+}
+
+.erpcase-media-stage::after {
+  content: "";
+  position: absolute;
+  right: 1.2rem;
+  bottom: 1.2rem;
+  z-index: 3;
+  width: 112px;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-secondary), var(--color-primary), rgba(255, 255, 255, 0.8));
+  box-shadow: 0 0 16px rgba(0, 242, 254, 0.35);
+  animation: erpcase-progress 18s linear infinite;
+  transform-origin: left center;
+}
+
+.erpcase-visual-badge {
+  position: absolute;
+  left: 1.2rem;
+  bottom: 1.2rem;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0.45rem 0.75rem;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+  border: 1px solid rgba(0, 242, 254, 0.28);
+  border-radius: 8px;
+  background: rgba(5, 9, 22, 0.72);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 18px rgba(0, 242, 254, 0.16);
+}
+
+
+.erpcase-floating-message {
+  position: absolute;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: min(310px, calc(100% - 2rem));
+  min-height: 42px;
+  padding: 0.62rem 0.9rem;
+  color: #101827;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.15;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22), 0 0 18px rgba(0, 242, 254, 0.16);
+  backdrop-filter: blur(12px);
+  animation: erpcase-message-float 8s ease-in-out infinite;
+}
+
+.erpcase-floating-message i {
+  display: grid;
+  place-items: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 0.82rem;
+  border-radius: 50%;
+  background: rgba(10, 132, 255, 0.1);
+}
+
+.erpcase-message-unidades {
+  top: 8%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.erpcase-message-gerencial {
+  top: 32%;
+  right: 5%;
+  animation-delay: -2.65s;
+}
+
+.erpcase-message-dispositivos {
+  right: 5%;
+  bottom: 12%;
+  animation-delay: -5.3s;
 }
 
 .erpcase-tab-cta {
@@ -1421,6 +1543,301 @@ section {
 .softrps-product-visual img,
 .parkflow-product-visual img {
   object-position: center;
+}
+
+.mobile-product-visual {
+  isolation: isolate;
+}
+
+.mobile-product-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(0, 242, 254, 0.16), transparent 30%),
+    linear-gradient(180deg, rgba(5, 9, 22, 0.04), rgba(5, 9, 22, 0.28));
+  pointer-events: none;
+}
+
+.mobile-product-visual img {
+  position: relative;
+  z-index: 0;
+}
+
+.softpark-mobile-floating-message {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: min(320px, calc(100% - 2rem));
+  min-height: 42px;
+  padding: 0.62rem 0.9rem;
+  color: #101827;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.15;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22), 0 0 18px rgba(0, 242, 254, 0.16);
+  backdrop-filter: blur(12px);
+  animation: erpcase-message-float 8s ease-in-out infinite;
+}
+
+.softpark-mobile-floating-message i {
+  display: grid;
+  place-items: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 0.82rem;
+  border-radius: 50%;
+  background: rgba(10, 132, 255, 0.1);
+}
+
+.mobile-message-gestao {
+  top: 9%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.mobile-message-recebimento {
+  top: 34%;
+  right: 5%;
+  animation-delay: -2.65s;
+}
+
+.mobile-message-ecossistema {
+  right: 5%;
+  bottom: 12%;
+  animation-delay: -5.3s;
+}
+
+.softpay-product-visual {
+  isolation: isolate;
+}
+
+.softpay-product-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(255, 159, 10, 0.14), transparent 30%),
+    radial-gradient(circle at 20% 76%, rgba(0, 242, 254, 0.12), transparent 34%),
+    linear-gradient(180deg, rgba(5, 9, 22, 0.03), rgba(5, 9, 22, 0.3));
+  pointer-events: none;
+}
+
+.softpay-product-visual img {
+  position: relative;
+  z-index: 0;
+}
+
+.softpay-floating-message {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: min(320px, calc(100% - 2rem));
+  min-height: 42px;
+  padding: 0.62rem 0.9rem;
+  color: #101827;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.15;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22), 0 0 18px rgba(255, 159, 10, 0.16);
+  backdrop-filter: blur(12px);
+  animation: erpcase-message-float 8s ease-in-out infinite;
+}
+
+.softpay-floating-message i {
+  display: grid;
+  place-items: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  color: var(--color-warning);
+  font-size: 0.82rem;
+  border-radius: 50%;
+  background: rgba(255, 159, 10, 0.12);
+}
+
+.softpay-message-anuncios {
+  top: 9%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.softpay-message-versoes {
+  left: 5%;
+  bottom: 28%;
+  animation-delay: -2.65s;
+}
+
+.softpay-message-pagamentos {
+  right: 5%;
+  bottom: 12%;
+  animation-delay: -5.3s;
+}
+
+.softrps-product-visual {
+  isolation: isolate;
+}
+
+.softrps-product-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(48, 209, 88, 0.14), transparent 30%),
+    radial-gradient(circle at 82% 76%, rgba(0, 242, 254, 0.12), transparent 34%),
+    linear-gradient(180deg, rgba(5, 9, 22, 0.03), rgba(5, 9, 22, 0.3));
+  pointer-events: none;
+}
+
+.softrps-product-visual img {
+  position: relative;
+  z-index: 0;
+}
+
+.softrps-floating-message {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: min(330px, calc(100% - 2rem));
+  min-height: 42px;
+  padding: 0.62rem 0.9rem;
+  color: #101827;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.15;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22), 0 0 18px rgba(48, 209, 88, 0.16);
+  backdrop-filter: blur(12px);
+  animation: erpcase-message-float 8s ease-in-out infinite;
+}
+
+.softrps-floating-message i {
+  display: grid;
+  place-items: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  color: var(--color-accent);
+  font-size: 0.82rem;
+  border-radius: 50%;
+  background: rgba(48, 209, 88, 0.12);
+}
+
+.softrps-message-fiscal {
+  top: 9%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.softrps-message-ecossistema {
+  top: 34%;
+  right: 5%;
+  animation-delay: -2.65s;
+}
+
+.softrps-message-automatica {
+  right: 5%;
+  bottom: 12%;
+  animation-delay: -5.3s;
+}
+
+.parkflow-product-visual {
+  isolation: isolate;
+}
+
+.parkflow-product-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(0, 242, 254, 0.16), transparent 30%),
+    radial-gradient(circle at 20% 78%, rgba(10, 132, 255, 0.14), transparent 34%),
+    linear-gradient(180deg, rgba(5, 9, 22, 0.03), rgba(5, 9, 22, 0.3));
+  pointer-events: none;
+}
+
+.parkflow-product-visual img {
+  position: relative;
+  z-index: 0;
+}
+
+.parkflow-floating-message {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: min(350px, calc(100% - 2rem));
+  min-height: 42px;
+  padding: 0.62rem 0.9rem;
+  color: #101827;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.15;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22), 0 0 18px rgba(0, 242, 254, 0.16);
+  backdrop-filter: blur(12px);
+  animation: erpcase-message-float 8s ease-in-out infinite;
+}
+
+.parkflow-floating-message i {
+  display: grid;
+  place-items: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  color: var(--color-secondary);
+  font-size: 0.82rem;
+  border-radius: 50%;
+  background: rgba(0, 242, 254, 0.12);
+}
+
+.parkflow-message-espaco {
+  top: 9%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.parkflow-message-integrada {
+  top: 34%;
+  right: 5%;
+  animation-delay: -2.65s;
+}
+
+.parkflow-message-fluxo {
+  right: 5%;
+  bottom: 12%;
+  animation-delay: -5.3s;
 }
 /* Mockups de Imagem dos Produtos */
 .product-visual {
@@ -1779,9 +2196,103 @@ section {
   filter: saturate(1.12) contrast(1.05);
 }
 
+.parkvision-media-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 24% 22%, rgba(0, 242, 254, 0.14), transparent 30%),
+    linear-gradient(180deg, rgba(5, 9, 22, 0.02), rgba(5, 9, 22, 0.24));
+  pointer-events: none;
+}
+
+.parkvision-floating-message {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: min(280px, calc(100% - 2rem));
+  min-height: 42px;
+  padding: 0.62rem 0.9rem;
+  color: #101827;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.15;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22), 0 0 18px rgba(0, 242, 254, 0.16);
+  backdrop-filter: blur(12px);
+  animation: parkvision-message-float 8s ease-in-out infinite;
+}
+
+.parkvision-floating-message i {
+  display: grid;
+  place-items: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 0.82rem;
+  border-radius: 50%;
+  background: rgba(10, 132, 255, 0.1);
+}
+
+.message-competitividade {
+  top: 9%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.message-rentabilidade {
+  top: 18%;
+  right: 5%;
+  animation-delay: -2s;
+}
+
+.message-decisoes {
+  right: 4%;
+  bottom: 20%;
+  animation-delay: -4s;
+}
+
+.message-tempo-real {
+  left: 5%;
+  bottom: 10%;
+  animation-delay: -6s;
+}
+
 @media (max-width: 768px) {
   .parkvision-media-stage {
     border-radius: 18px;
+  }
+
+  .parkvision-floating-message {
+    min-height: 36px;
+    padding: 0.5rem 0.68rem;
+    font-size: 0.84rem;
+    gap: 0.38rem;
+  }
+
+  .parkvision-floating-message i {
+    flex-basis: 20px;
+    width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
+  }
+
+  .message-competitividade,
+  .message-tempo-real {
+    left: 0.7rem;
+  }
+
+  .message-rentabilidade,
+  .message-decisoes {
+    right: 0.7rem;
   }
 }
 /* ==========================================================================
@@ -1814,7 +2325,7 @@ section {
 
 .segment-arena-icon {
   position: relative;
-  width: 46px;
+  width: 58px;
   height: 35px;
   margin-bottom: 1.25rem;
   color: var(--color-secondary);
@@ -2378,6 +2889,60 @@ textarea.form-control {
   to { opacity: 1; transform: scale(1); }
 }
 
+
+
+@keyframes erpcase-message-float {
+  0%, 100% {
+    opacity: 0.84;
+    transform: translate3d(0, 0, 0) scale(0.98);
+  }
+  18%, 72% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+    transform: translate3d(0, -12px, 0) scale(1.02);
+  }
+}
+@keyframes parkvision-message-float {
+  0%, 100% {
+    opacity: 0.82;
+    transform: translate3d(0, 0, 0) scale(0.98);
+  }
+  18%, 72% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+    transform: translate3d(0, -12px, 0) scale(1.02);
+  }
+}
+@keyframes erpcase-image-cycle {
+  0% {
+    opacity: 0;
+    transform: scale(1.05) translateY(10px);
+  }
+  5%, 24% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  30%, 100% {
+    opacity: 0;
+    transform: scale(0.985) translateY(-8px);
+  }
+}
+
+@keyframes erpcase-progress {
+  0% { transform: scaleX(0); }
+  24% { transform: scaleX(1); }
+  25% { transform: scaleX(0); }
+  49% { transform: scaleX(1); }
+  50% { transform: scaleX(0); }
+  74% { transform: scaleX(1); }
+  75% { transform: scaleX(0); }
+  99% { transform: scaleX(1); }
+  100% { transform: scaleX(0); }
+}
 @keyframes erpcase-feature-enter {
   from {
     opacity: 0;
@@ -2423,6 +2988,14 @@ textarea.form-control {
 .delay-400 { transition-delay: 400ms; }
 
 @media (prefers-reduced-motion: reduce) {
+  .erpcase-stack-image,
+  .erpcase-media-stage::after,
+  .parkvision-floating-message,
+  .erpcase-floating-message,
+  .softpark-mobile-floating-message,
+  .softpay-floating-message,
+  .softrps-floating-message,
+  .parkflow-floating-message,
   #erpcase.tab-content.active .erpcase-feature-card,
   #erpcase.tab-content.active .erpcase-feature-card i,
   #softpark.tab-content.active .softpark-feature-card,
@@ -2444,6 +3017,15 @@ textarea.form-control {
   .erpcase-feature-card {
     opacity: 1;
     transform: none;
+  }
+
+  .erpcase-stack-image {
+    opacity: 0;
+    transform: none;
+  }
+
+  .erpcase-stack-image:first-child {
+    opacity: 1;
   }
 }
 /* ==========================================================================
@@ -2467,19 +3049,19 @@ textarea.form-control {
     gap: 3rem;
     text-align: center;
   }
-  
+
   .hero-title {
     font-size: clamp(2.25rem, 6vw, 3.25rem);
   }
-  
+
   .hero-subtitle {
     margin: 0 auto 2.5rem;
   }
-  
+
   .hero-ctas {
     justify-content: center;
   }
-  
+
   .ecosystem-container,
   .product-section-panel,
   .tab-content.active,
@@ -2488,7 +3070,7 @@ textarea.form-control {
     grid-template-columns: 1fr;
     gap: 3rem;
   }
-  
+
   .ai-grid {
     direction: rtl; /* Para inverter a ordem e mostrar o visual LPR primeiro no mobile se desejado, ou resetar abaixo */
   }
@@ -2498,7 +3080,7 @@ textarea.form-control {
   .lpr-simulator {
     direction: ltr;
   }
-  
+
   .footer-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -2571,15 +3153,15 @@ textarea.form-control {
   :root {
     --header-height: 70px;
   }
-  
+
   .menu-toggle {
     display: block;
   }
-  
+
   .nav-container {
     flex-grow: 0;
   }
-  
+
   .nav-menu {
     position: fixed;
     top: var(--header-height);
@@ -2597,27 +3179,27 @@ textarea.form-control {
     align-items: flex-start;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
   }
-  
+
   .nav-menu.mobile-active {
     transform: translateX(0);
   }
-  
+
   .header-cta {
     display: none;
   }
-  
+
   .mobile-cta {
     display: block !important;
     width: 100%;
     margin-top: 1.5rem;
   }
-  
+
   .mobile-cta .btn {
     width: 100%;
     padding: 0.875rem 2rem;
     font-size: 1rem;
   }
-  
+
   .nav-link {
     font-size: 1.25rem;
     width: 100%;
@@ -2628,36 +3210,36 @@ textarea.form-control {
   section {
     padding: 5rem 0;
   }
-  
+
   .container {
     padding: 0 1.5rem;
   }
-  
+
   .differentials-grid,
   .segments-grid,
   .benefits-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .product-features {
     grid-template-columns: 1fr;
   }
-  
+
   .form-grid-2 {
     grid-template-columns: 1fr;
     gap: 0;
   }
-  
+
   .benefits-list-row {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
-  
+
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
-  
+
   .footer-bottom {
     flex-direction: column;
     text-align: center;
@@ -3316,32 +3898,37 @@ textarea.form-control {
   z-index: 2;
   display: grid;
   place-items: center;
-  width: 54px;
-  height: 22px;
-  color: rgba(255, 255, 255, 0.82);
-  font-size: 0.62rem;
-  font-weight: 700;
+  width: 58px;
+  height: 34px;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.98rem;
+  font-weight: 800;
   letter-spacing: 0;
-  border: 1px solid rgba(0, 242, 254, 0.24);
-  border-radius: 6px;
-  background: rgba(4, 11, 26, 0.72);
+  border: 1px solid rgba(0, 242, 254, 0.42);
+  border-radius: 9px;
+  background: rgba(4, 11, 26, 0.86);
+  box-shadow: 0 0 18px rgba(0, 242, 254, 0.26);
   pointer-events: none;
 }
 
 .network-3d-label-a {
-  left: 11%;
-  bottom: 17%;
+  left: 5%;
+  bottom: 24%;
 }
 
 .network-3d-label-b {
-  right: 11%;
-  bottom: 17%;
+  right: 5%;
+  top: 24%;
 }
 
 .network-3d-label-c {
-  left: 50%;
-  top: 14%;
-  transform: translateX(-50%);
+  left: 5%;
+  top: 24%;
+}
+
+.network-3d-label-d {
+  right: 5%;
+  bottom: 24%;
 }
 
 .network-parking-3d.three-unavailable {
@@ -3366,18 +3953,136 @@ textarea.form-control {
   }
 
   .network-3d-label {
-    width: 48px;
-    height: 20px;
-    font-size: 0.56rem;
+    width: 50px;
+    height: 30px;
+    font-size: 0.84rem;
   }
 
   .network-3d-label-a {
-    left: 7%;
-    bottom: 17%;
+    left: 4%;
+    bottom: 23%;
   }
 
   .network-3d-label-b {
-    right: 7%;
-    bottom: 17%;
+    right: 4%;
+    top: 23%;
+  }
+
+  .network-3d-label-c {
+    left: 4%;
+    top: 23%;
+  }
+
+  .network-3d-label-d {
+    right: 4%;
+    bottom: 23%;
+  }
+}
+
+/* Responsive floating message containment */
+.parkvision-floating-message,
+.erpcase-floating-message,
+.softpark-mobile-floating-message,
+.softpay-floating-message,
+.softrps-floating-message,
+.parkflow-floating-message {
+  box-sizing: border-box;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 768px) {
+  .parkvision-floating-message,
+  .erpcase-floating-message,
+  .softpark-mobile-floating-message,
+  .softpay-floating-message,
+  .softrps-floating-message,
+  .parkflow-floating-message {
+    max-width: calc(100% - 1.5rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .parkvision-floating-message,
+  .erpcase-floating-message,
+  .softpark-mobile-floating-message,
+  .softpay-floating-message,
+  .softrps-floating-message,
+  .parkflow-floating-message {
+    left: 0.75rem !important;
+    right: 0.75rem !important;
+    width: auto;
+    max-width: none;
+    min-height: 34px;
+    padding: 0.48rem 0.62rem;
+    gap: 0.38rem;
+    font-size: 0.64rem;
+    line-height: 1.12;
+    border-radius: 14px;
+  }
+
+  .parkvision-floating-message i,
+  .erpcase-floating-message i,
+  .softpark-mobile-floating-message i,
+  .softpay-floating-message i,
+  .softrps-floating-message i,
+  .parkflow-floating-message i {
+    flex: 0 0 20px;
+    width: 20px;
+    height: 20px;
+    font-size: 0.84rem;
+  }
+
+  .message-competitividade,
+  .erpcase-message-unidades,
+  .mobile-message-gestao,
+  .softpay-message-anuncios,
+  .softrps-message-fiscal,
+  .parkflow-message-espaco {
+    top: 0.75rem;
+    bottom: auto;
+  }
+
+  .message-rentabilidade,
+  .erpcase-message-gerencial,
+  .mobile-message-recebimento {
+    top: 3.75rem;
+    bottom: auto;
+  }
+
+  .message-decisoes {
+    top: auto;
+    bottom: 3.75rem;
+  }
+
+  .message-tempo-real,
+  .erpcase-message-dispositivos,
+  .mobile-message-ecossistema,
+  .softpay-message-pagamentos,
+  .softrps-message-automatica,
+  .parkflow-message-fluxo {
+    top: auto;
+    bottom: 0.75rem;
+  }
+
+  .softpay-message-versoes,
+  .softrps-message-ecossistema,
+  .parkflow-message-integrada {
+    top: auto;
+    bottom: 3.75rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .parkvision-floating-message,
+  .erpcase-floating-message,
+  .softpark-mobile-floating-message,
+  .softpay-floating-message,
+  .softrps-floating-message,
+  .parkflow-floating-message {
+    left: 0.55rem !important;
+    right: 0.55rem !important;
+    padding: 0.42rem 0.54rem;
+    font-size: 0.58rem;
   }
 }

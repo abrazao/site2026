@@ -406,93 +406,188 @@ function initNetworkParking3D() {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
   const clock = new THREE.Clock();
   const animatedObjects = [];
-  const cars = [];
   const pulses = [];
+  const gateState = new Map();
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.setClearColor(0x000000, 0);
 
-  camera.position.set(0, 7.6, 8.6);
+  camera.position.set(0, 8.2, 8.8);
   camera.lookAt(0, 0, 0);
 
-  scene.add(new THREE.HemisphereLight(0xdafcff, 0x081322, 1.6));
+  scene.add(new THREE.HemisphereLight(0xdafcff, 0x081322, 1.55));
 
-  const keyLight = new THREE.DirectionalLight(0xffffff, 1.7);
+  const keyLight = new THREE.DirectionalLight(0xffffff, 1.75);
   keyLight.position.set(3.8, 7.2, 4.6);
   scene.add(keyLight);
 
   const cyan = 0x00f2fe;
   const blue = 0x0a84ff;
+  const green = 0x30d158;
   const white = 0xf6fbff;
-  const asphalt = new THREE.MeshStandardMaterial({ color: 0x111a27, roughness: 0.72, metalness: 0.05 });
+  const amber = 0xff9f0a;
+  const asphalt = new THREE.MeshStandardMaterial({ color: 0x101827, roughness: 0.72, metalness: 0.05 });
   const roadMat = new THREE.MeshStandardMaterial({ color: 0x1f2937, roughness: 0.65, metalness: 0.08 });
   const laneMat = new THREE.MeshBasicMaterial({ color: 0xdff8ff, transparent: true, opacity: 0.72 });
-  const glowMat = new THREE.MeshBasicMaterial({ color: cyan, transparent: true, opacity: 0.28 });
-  const lotMat = new THREE.MeshStandardMaterial({ color: 0x10223d, roughness: 0.55, metalness: 0.12 });
-  const glassMat = new THREE.MeshStandardMaterial({ color: cyan, emissive: cyan, emissiveIntensity: 0.18, roughness: 0.3, metalness: 0.35 });
+  const slotMat = new THREE.MeshBasicMaterial({ color: 0x7bdff2, transparent: true, opacity: 0.64 });
+  const glassMat = new THREE.MeshStandardMaterial({ color: cyan, emissive: cyan, emissiveIntensity: 0.2, roughness: 0.3, metalness: 0.35 });
+  const gateMat = new THREE.MeshStandardMaterial({ color: white, roughness: 0.35 });
+  const emitterMat = new THREE.MeshStandardMaterial({ color: amber, emissive: amber, emissiveIntensity: 0.18, roughness: 0.38, metalness: 0.14 });
+  const receiverMat = new THREE.MeshStandardMaterial({ color: green, emissive: green, emissiveIntensity: 0.18, roughness: 0.38, metalness: 0.14 });
+  const deviceMat = new THREE.MeshStandardMaterial({ color: blue, emissive: blue, emissiveIntensity: 0.12, roughness: 0.36, metalness: 0.18 });
 
-  const ground = new THREE.Mesh(new THREE.BoxGeometry(9.8, 0.16, 5.6), asphalt);
+  const ground = new THREE.Mesh(new THREE.BoxGeometry(10.2, 0.16, 5.9), asphalt);
   ground.position.y = -0.1;
   scene.add(ground);
 
-  const grid = new THREE.GridHelper(9.8, 14, 0x1f6b83, 0x163145);
+  const grid = new THREE.GridHelper(10.2, 16, 0x1f6b83, 0x163145);
   grid.position.y = 0.01;
   scene.add(grid);
 
-  function makeBox(width, height, depth, material, position) {
+  function makeBox(width, height, depth, material, position, parent = scene) {
     const mesh = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), material);
     mesh.position.set(position.x, position.y, position.z);
-    scene.add(mesh);
+    parent.add(mesh);
     return mesh;
   }
 
-  function makeRoad(x, z, length, rotation) {
-    const road = new THREE.Mesh(new THREE.BoxGeometry(length, 0.06, 0.42), roadMat);
-    road.position.set(x, 0.08, z);
-    road.rotation.y = rotation;
+  function makeCylinder(radius, height, material, position, parent = scene) {
+    const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, height, 18), material);
+    mesh.position.set(position.x, position.y, position.z);
+    parent.add(mesh);
+    return mesh;
+  }
+
+  function makeRoadBetween(start, end, width = 0.46) {
+    const dx = end.x - start.x;
+    const dz = end.z - start.z;
+    const length = Math.hypot(dx, dz);
+    const road = new THREE.Mesh(new THREE.BoxGeometry(length, 0.06, width), roadMat);
+    road.position.set((start.x + end.x) / 2, 0.08, (start.z + end.z) / 2);
+    road.rotation.y = Math.atan2(-dz, dx);
     scene.add(road);
 
-    for (let i = -2; i <= 2; i += 1) {
-      const lane = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.012, 0.035), laneMat);
-      lane.position.set(x + Math.cos(rotation) * i * 0.82, 0.13, z - Math.sin(rotation) * i * 0.82);
-      lane.rotation.y = rotation;
+    const dashCount = Math.max(2, Math.floor(length / 0.85));
+    for (let i = 1; i < dashCount; i += 1) {
+      const t = i / dashCount;
+      const lane = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.012, 0.032), laneMat);
+      lane.position.set(start.x + dx * t, 0.13, start.z + dz * t);
+      lane.rotation.y = road.rotation.y;
       scene.add(lane);
     }
   }
 
-  function makeLot(x, z) {
-    const base = makeBox(1.15, 0.2, 0.86, lotMat, { x, y: 0.1, z });
-    makeBox(0.85, 0.62, 0.56, lotMat, { x, y: 0.51, z });
+  function makeLabel(text, position, options = {}) {
+    const canvasLabel = document.createElement('canvas');
+    const context = canvasLabel.getContext('2d');
+    const scale = options.scale || 2;
+    const width = options.width || 230;
+    const height = options.height || 72;
+    canvasLabel.width = width * scale;
+    canvasLabel.height = height * scale;
+    context.scale(scale, scale);
+    context.clearRect(0, 0, width, height);
+    context.fillStyle = options.fill || 'rgba(4, 11, 26, 0.82)';
+    context.strokeStyle = options.stroke || 'rgba(0, 242, 254, 0.7)';
+    context.lineWidth = 2;
+    const radius = 14;
+    context.beginPath();
+    context.moveTo(radius, 1);
+    context.lineTo(width - radius, 1);
+    context.quadraticCurveTo(width - 1, 1, width - 1, radius);
+    context.lineTo(width - 1, height - radius);
+    context.quadraticCurveTo(width - 1, height - 1, width - radius, height - 1);
+    context.lineTo(radius, height - 1);
+    context.quadraticCurveTo(1, height - 1, 1, height - radius);
+    context.lineTo(1, radius);
+    context.quadraticCurveTo(1, 1, radius, 1);
+    context.closePath();
+    context.fill();
+    context.stroke();
+    context.fillStyle = options.color || '#f6fbff';
+    context.font = `${options.weight || 800} ${options.fontSize || 24}px Inter, Arial, sans-serif`;
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(text, width / 2, height / 2);
 
-    for (let i = -1; i <= 1; i += 1) {
-      const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.012, 0.62), laneMat);
-      stripe.position.set(x + i * 0.24, 0.84, z);
-      scene.add(stripe);
-    }
-
-    const beacon = makeBox(0.13, 0.13, 0.13, glassMat, { x, y: 0.94, z });
-    animatedObjects.push({ mesh: beacon, baseY: beacon.position.y, speed: 1.6 });
-    return base;
+    const texture = new THREE.CanvasTexture(canvasLabel);
+    texture.needsUpdate = true;
+    const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false }));
+    sprite.position.set(position.x, position.y, position.z);
+    sprite.scale.set(options.spriteWidth || 1.2, options.spriteHeight || 0.38, 1);
+    scene.add(sprite);
+    return sprite;
   }
 
-  function makeGate(x, z, rotation) {
-    const post = makeBox(0.12, 0.55, 0.12, glassMat, { x, y: 0.35, z });
-    const arm = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.05, 0.05), new THREE.MeshStandardMaterial({ color: white, roughness: 0.35 }));
-    arm.position.set(x + Math.cos(rotation) * 0.35, 0.66, z - Math.sin(rotation) * 0.35);
-    arm.rotation.y = rotation;
-    scene.add(arm);
-    animatedObjects.push({ mesh: arm, gateRotation: rotation, speed: 2.2 });
-    return post;
+  function makeParkingSlot(x, z, label) {
+    makeBox(0.72, 0.018, 1.05, new THREE.MeshBasicMaterial({ color: 0x0f2038, transparent: true, opacity: 0.46 }), { x, y: 0.04, z });
+    makeBox(0.026, 0.03, 1.05, slotMat, { x: x - 0.37, y: 0.08, z });
+    makeBox(0.026, 0.03, 1.05, slotMat, { x: x + 0.37, y: 0.08, z });
+    makeBox(0.74, 0.03, 0.026, slotMat, { x, y: 0.08, z: z - 0.52 });
+    makeLabel(label, { x, y: 0.44, z: z - 0.18 }, { width: 120, height: 54, fontSize: 24, spriteWidth: 0.78, spriteHeight: 0.32, fill: 'rgba(4, 11, 26, 0.82)' });
+  }
+
+  function makeDeviceSymbol(label, position, material, shape = 'box') {
+    if (shape === 'cylinder') {
+      const mesh = makeCylinder(0.09, 0.38, material, { x: position.x, y: 0.28, z: position.z });
+      mesh.rotation.z = Math.PI / 2;
+    } else if (shape === 'antenna') {
+      makeCylinder(0.045, 0.48, material, { x: position.x, y: 0.32, z: position.z });
+      const halo = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.01, 8, 32), new THREE.MeshBasicMaterial({ color: cyan, transparent: true, opacity: 0.76 }));
+      halo.position.set(position.x, 0.62, position.z);
+      halo.rotation.x = Math.PI / 2;
+      scene.add(halo);
+      animatedObjects.push({ mesh: halo, spin: true, speed: 1.1 });
+    } else {
+      makeBox(0.18, 0.34, 0.18, material, { x: position.x, y: 0.26, z: position.z });
+    }
+    makeLabel(label, { x: position.x, y: 1.14, z: position.z }, { width: 300, height: 86, fontSize: 34, spriteWidth: 1.78, spriteHeight: 0.56, fill: 'rgba(4, 11, 26, 0.94)' });
+  }
+
+  function makeGate(config) {
+    const { id, type, number, position, rotation } = config;
+    const group = new THREE.Group();
+    group.position.set(position.x, 0, position.z);
+    group.rotation.y = rotation;
+    scene.add(group);
+
+    const title = id;
+    makeLabel(title, { x: position.x, y: 1.62, z: position.z }, { width: 136, height: 76, fontSize: 40, spriteWidth: 0.94, spriteHeight: 0.52, fill: type === 'entrada' ? 'rgba(10, 132, 255, 0.92)' : 'rgba(48, 209, 88, 0.92)' });
+
+    makeBox(0.16, 0.74, 0.16, glassMat, { x: -0.28, y: 0.4, z: 0 }, group);
+    const arm = new THREE.Mesh(new THREE.BoxGeometry(0.76, 0.05, 0.05), gateMat);
+    arm.position.set(0.18, 0.76, 0);
+    group.add(arm);
+
+    const deviceLabels = type === 'entrada'
+      ? [`LPR${number}`, `AntenaTAG${number}`, `Cancela${number}`, `Emissor${number}`]
+      : [`LPR${number}`, `AntenaTAG${number}`, `Cancela${number}`, `Receptor${number}`];
+
+    const localPositions = [
+      { x: -0.52, z: -0.32, mat: deviceMat, shape: 'box' },
+      { x: -0.16, z: 0.34, mat: glassMat, shape: 'antenna' },
+      { x: 0.22, z: -0.32, mat: gateMat, shape: 'cylinder' },
+      { x: 0.58, z: 0.34, mat: type === 'entrada' ? emitterMat : receiverMat, shape: 'box' },
+    ];
+
+    deviceLabels.forEach((label, index) => {
+      const local = localPositions[index];
+      const world = new THREE.Vector3(local.x, 0, local.z).applyAxisAngle(new THREE.Vector3(0, 1, 0), rotation);
+      makeDeviceSymbol(label, { x: position.x + world.x, z: position.z + world.z }, local.mat, local.shape);
+    });
+
+    gateState.set(id, { group, arm, position: new THREE.Vector3(position.x, 0.9, position.z), active: 0 });
+    return group;
   }
 
   function makeCar(color) {
     const group = new THREE.Group();
-    const body = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.18, 0.26), new THREE.MeshStandardMaterial({ color, roughness: 0.34, metalness: 0.18 }));
+    const body = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.18, 0.28), new THREE.MeshStandardMaterial({ color, roughness: 0.34, metalness: 0.18 }));
     const cabin = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.13, 0.2), new THREE.MeshStandardMaterial({ color: 0xdafcff, roughness: 0.18, metalness: 0.45 }));
-    const light = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.035, 0.18), new THREE.MeshBasicMaterial({ color: cyan }));
+    const light = new THREE.Mesh(new THREE.BoxGeometry(0.055, 0.035, 0.18), new THREE.MeshBasicMaterial({ color: cyan }));
     body.position.y = 0.18;
-    cabin.position.set(0.02, 0.33, 0);
-    light.position.set(0.26, 0.19, 0);
+    cabin.position.set(0.03, 0.33, 0);
+    light.position.set(0.28, 0.19, 0);
     group.add(body, cabin, light);
     scene.add(group);
     return group;
@@ -504,17 +599,23 @@ function initNetworkParking3D() {
     return pulse;
   }
 
-  makeRoad(-2.35, -1.08, 4.6, -0.42);
-  makeRoad(2.35, -1.08, 4.6, 0.42);
-  makeRoad(0, 1.35, 5.1, 0);
+  function v(x, z) {
+    return new THREE.Vector3(x, 0.08, z);
+  }
 
-  makeLot(-3.8, -2.05);
-  makeLot(3.8, -2.05);
-  makeLot(0, 2.2);
+  function easeInOut(value) {
+    return value < 0.5 ? 2 * value * value : 1 - Math.pow(-2 * value + 2, 2) / 2;
+  }
 
-  makeGate(-2.92, -1.78, -0.42);
-  makeGate(2.92, -1.78, 0.42);
-  makeGate(-0.74, 1.35, 0);
+  function samplePath(points, progress) {
+    const clamped = Math.min(Math.max(progress, 0), 1);
+    const scaled = clamped * (points.length - 1);
+    const index = Math.min(points.length - 2, Math.floor(scaled));
+    const local = scaled - index;
+    const position = new THREE.Vector3().lerpVectors(points[index], points[index + 1], easeInOut(local));
+    const direction = new THREE.Vector3().subVectors(points[index + 1], points[index]);
+    return { position, direction };
+  }
 
   const hubBase = makeBox(1.05, 0.3, 1.05, new THREE.MeshStandardMaterial({ color: 0x0b1b32, roughness: 0.35, metalness: 0.22 }), { x: 0, y: 0.15, z: 0 });
   const hubCore = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.5, 0.86, 32), glassMat);
@@ -522,22 +623,153 @@ function initNetworkParking3D() {
   scene.add(hubCore);
   animatedObjects.push({ mesh: hubCore, spin: true, speed: 0.45 });
 
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(1.0, 0.015, 8, 80), glowMat);
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(1.0, 0.015, 8, 80), new THREE.MeshBasicMaterial({ color: cyan, transparent: true, opacity: 0.28 }));
   ring.position.y = 0.88;
   ring.rotation.x = Math.PI / 2;
   scene.add(ring);
   animatedObjects.push({ mesh: ring, spin: true, speed: -0.65 });
 
-  cars.push({ mesh: makeCar(0xffffff), from: new THREE.Vector3(-3.8, 0, -2.05), to: new THREE.Vector3(-0.72, 0, -0.2), rot: -0.42, offset: 0 });
-  cars.push({ mesh: makeCar(0x0a84ff), from: new THREE.Vector3(3.8, 0, -2.05), to: new THREE.Vector3(0.72, 0, -0.2), rot: Math.PI + 0.42, offset: 0.33 });
-  cars.push({ mesh: makeCar(0x30d158), from: new THREE.Vector3(0, 0, 2.2), to: new THREE.Vector3(0, 0, 0.62), rot: Math.PI, offset: 0.66 });
+  const gates = [
+    { id: 'P1', type: 'entrada', number: 1, position: { x: -4.2, z: -1.86 }, rotation: 0 },
+    { id: 'P2', type: 'entrada', number: 2, position: { x: 4.2, z: 1.86 }, rotation: Math.PI },
+    { id: 'P3', type: 'saida', number: 3, position: { x: -4.2, z: 1.86 }, rotation: 0 },
+    { id: 'P4', type: 'saida', number: 4, position: { x: 4.2, z: -1.86 }, rotation: Math.PI },
+  ];
 
-  pulses.push({ mesh: makePulse(), from: new THREE.Vector3(-3.55, 0.95, -1.72), to: new THREE.Vector3(0, 1.18, 0), offset: 0.12 });
-  pulses.push({ mesh: makePulse(), from: new THREE.Vector3(3.55, 0.95, -1.72), to: new THREE.Vector3(0, 1.18, 0), offset: 0.45 });
-  pulses.push({ mesh: makePulse(), from: new THREE.Vector3(0, 1.1, 1.9), to: new THREE.Vector3(0, 1.18, 0), offset: 0.78 });
+  gates.forEach(makeGate);
 
-  function easeInOut(value) {
-    return value < 0.5 ? 2 * value * value : 1 - Math.pow(-2 * value + 2, 2) / 2;
+  makeRoadBetween(v(-5.0, -1.86), v(-2.2, -1.15));
+  makeRoadBetween(v(5.0, 1.86), v(2.2, 1.15));
+  makeRoadBetween(v(-2.2, 1.15), v(-5.0, 1.86));
+  makeRoadBetween(v(2.2, -1.15), v(5.0, -1.86));
+  makeRoadBetween(v(-2.2, -1.15), v(2.2, -1.15));
+  makeRoadBetween(v(-2.2, 1.15), v(2.2, 1.15));
+  makeRoadBetween(v(-2.2, -1.15), v(-2.2, 1.15));
+  makeRoadBetween(v(2.2, -1.15), v(2.2, 1.15));
+  makeRoadBetween(v(0, -1.15), v(0, 1.15), 0.38);
+
+  const slots = [
+    { id: 'V01', x: -1.35, z: -0.36 },
+    { id: 'V02', x: -0.45, z: -0.36 },
+    { id: 'V03', x: 0.45, z: -0.36 },
+    { id: 'V04', x: 1.35, z: -0.36 },
+    { id: 'V05', x: -1.35, z: 0.52 },
+    { id: 'V06', x: -0.45, z: 0.52 },
+    { id: 'V07', x: 0.45, z: 0.52 },
+    { id: 'V08', x: 1.35, z: 0.52 },
+  ];
+  slots.forEach((slot) => makeParkingSlot(slot.x, slot.z, slot.id));
+
+  const routes = [
+    {
+      mesh: makeCar(0xffffff),
+      startsParked: true,
+      enterGate: 'P1',
+      exitGate: 'P4',
+      enterStart: 18,
+      exitStart: 0,
+      slot: v(-1.35, -0.36),
+      entryPath: [v(-5.15, -1.86), v(-4.2, -1.86), v(-2.2, -1.15), v(-1.35, -0.36)],
+      exitPath: [v(-1.35, -0.36), v(0, -1.15), v(2.2, -1.15), v(4.2, -1.86), v(5.2, -1.86)],
+    },
+    {
+      mesh: makeCar(0x0a84ff),
+      enterGate: 'P2',
+      exitGate: 'P3',
+      enterStart: 3,
+      exitStart: 21,
+      slot: v(0.45, 0.52),
+      entryPath: [v(5.15, 1.86), v(4.2, 1.86), v(2.2, 1.15), v(0.45, 0.52)],
+      exitPath: [v(0.45, 0.52), v(0, 1.15), v(-2.2, 1.15), v(-4.2, 1.86), v(-5.2, 1.86)],
+    },
+    {
+      mesh: makeCar(0x30d158),
+      startsParked: true,
+      enterGate: 'P1',
+      exitGate: 'P3',
+      enterStart: 24,
+      exitStart: 6,
+      slot: v(1.35, -0.36),
+      entryPath: [v(-5.15, -1.86), v(-4.2, -1.86), v(-2.2, -1.15), v(0, -1.15), v(1.35, -0.36)],
+      exitPath: [v(1.35, -0.36), v(0, 1.15), v(-2.2, 1.15), v(-4.2, 1.86), v(-5.2, 1.86)],
+    },
+    {
+      mesh: makeCar(0xff9f0a),
+      enterGate: 'P2',
+      exitGate: 'P4',
+      enterStart: 9,
+      exitStart: 27,
+      slot: v(-0.45, 0.52),
+      entryPath: [v(5.15, 1.86), v(4.2, 1.86), v(2.2, 1.15), v(0, 1.15), v(-0.45, 0.52)],
+      exitPath: [v(-0.45, 0.52), v(0, -1.15), v(2.2, -1.15), v(4.2, -1.86), v(5.2, -1.86)],
+    },
+    {
+      mesh: makeCar(0xff4d6d),
+      startsParked: true,
+      enterGate: 'P1',
+      exitGate: 'P4',
+      enterStart: 30,
+      exitStart: 12,
+      slot: v(-0.45, -0.36),
+      entryPath: [v(-5.15, -1.86), v(-4.2, -1.86), v(-2.2, -1.15), v(-0.45, -0.36)],
+      exitPath: [v(-0.45, -0.36), v(0, -1.15), v(2.2, -1.15), v(4.2, -1.86), v(5.2, -1.86)],
+    },
+    {
+      mesh: makeCar(0x9b7bff),
+      enterGate: 'P2',
+      exitGate: 'P3',
+      enterStart: 15,
+      exitStart: 33,
+      slot: v(1.35, 0.52),
+      entryPath: [v(5.15, 1.86), v(4.2, 1.86), v(2.2, 1.15), v(1.35, 0.52)],
+      exitPath: [v(1.35, 0.52), v(0, 1.15), v(-2.2, 1.15), v(-4.2, 1.86), v(-5.2, 1.86)],
+    },
+  ];
+  pulses.push({ mesh: makePulse(), fromGate: 'P1', offset: 0.0 });
+  pulses.push({ mesh: makePulse(), fromGate: 'P2', offset: 0.25 });
+  pulses.push({ mesh: makePulse(), fromGate: 'P3', offset: 0.5 });
+  pulses.push({ mesh: makePulse(), fromGate: 'P4', offset: 0.75 });
+
+  const cycleDuration = 36;
+  const moveDuration = 2.35;
+
+  function operationForRoute(route, time) {
+    const entryEnd = route.enterStart + moveDuration;
+    const exitEnd = route.exitStart + moveDuration;
+
+    if (time >= route.enterStart && time < entryEnd) {
+      return { type: 'enter', gate: route.enterGate, progress: (time - route.enterStart) / moveDuration };
+    }
+
+    if (time >= route.exitStart && time < exitEnd) {
+      return { type: 'exit', gate: route.exitGate, progress: (time - route.exitStart) / moveDuration };
+    }
+
+    return null;
+  }
+
+  function isParkedDuringCycle(route, time) {
+    if (route.startsParked) {
+      return time < route.exitStart || time >= route.enterStart + moveDuration;
+    }
+
+    return time >= route.enterStart + moveDuration && time < route.exitStart;
+  }
+
+  function parkCar(route) {
+    route.mesh.position.copy(route.slot);
+    route.mesh.position.y = 0.08;
+    route.mesh.rotation.y = Math.PI / 2;
+    route.mesh.visible = true;
+  }
+
+  function animateRoute(route, operation) {
+    const path = operation.type === 'enter' ? route.entryPath : route.exitPath;
+    const sample = samplePath(path, operation.progress);
+    route.mesh.position.copy(sample.position);
+    route.mesh.position.y = 0.08 + Math.sin(operation.progress * Math.PI) * 0.03;
+    route.mesh.rotation.y = Math.atan2(-sample.direction.z, sample.direction.x);
+    route.mesh.visible = operation.progress < 0.98 || operation.type === 'enter';
   }
 
   function resize() {
@@ -545,7 +777,7 @@ function initNetworkParking3D() {
     const height = Math.max(container.clientHeight, 1);
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
-    camera.position.set(0, width < 520 ? 8.6 : 7.6, width < 520 ? 9.8 : 8.6);
+    camera.position.set(0, width < 520 ? 9.25 : 8.2, width < 520 ? 9.9 : 8.8);
     camera.lookAt(0, 0, 0);
     camera.updateProjectionMatrix();
   }
@@ -562,37 +794,47 @@ function initNetworkParking3D() {
 
   function render() {
     const elapsed = clock.getElapsedTime();
+    const cycleTime = (elapsed % cycleDuration);
 
     if (!prefersReducedMotion && isVisible) {
-      cars.forEach((car) => {
-        const loop = (elapsed * 0.22 + car.offset) % 1;
-        const progress = loop < 0.82 ? easeInOut(loop / 0.82) : 1;
-        car.mesh.position.lerpVectors(car.from, car.to, progress);
-        car.mesh.position.y = 0.08 + Math.sin(progress * Math.PI) * 0.03;
-        car.mesh.rotation.y = car.rot;
-        car.mesh.visible = loop < 0.92;
+      gateState.forEach((state) => { state.active = 0; });
+
+      routes.forEach((route) => {
+        const operation = operationForRoute(route, cycleTime);
+        if (operation) {
+          animateRoute(route, operation);
+          const gate = gateState.get(operation.gate);
+          if (gate) gate.active = Math.max(gate.active, Math.sin(operation.progress * Math.PI));
+        } else if (isParkedDuringCycle(route, cycleTime)) {
+          parkCar(route);
+        } else {
+          route.mesh.visible = false;
+        }
+      });
+
+      gateState.forEach((state) => {
+        state.arm.rotation.z = -state.active * 0.82;
       });
 
       pulses.forEach((pulse) => {
-        const loop = (elapsed * 0.38 + pulse.offset) % 1;
-        pulse.mesh.position.lerpVectors(pulse.from, pulse.to, easeInOut(loop));
-        pulse.mesh.material.opacity = loop < 0.86 ? 0.88 - loop * 0.55 : 0;
-        const scale = 0.85 + loop * 1.4;
-        pulse.mesh.scale.setScalar(scale);
+        const gate = gateState.get(pulse.fromGate);
+        const loop = (elapsed * 0.36 + pulse.offset) % 1;
+        if (gate) pulse.mesh.position.lerpVectors(gate.position, new THREE.Vector3(0, 1.18, 0), easeInOut(loop));
+        const gateActivity = gate ? gate.active : 0;
+        pulse.mesh.material.opacity = gateActivity > 0.05 && loop < 0.86 ? (0.78 - loop * 0.52) * gateActivity : 0;
+        pulse.mesh.scale.setScalar(0.85 + loop * 1.4);
       });
 
       animatedObjects.forEach((item, index) => {
         if (item.spin) item.mesh.rotation.y += item.speed * 0.01;
         if (item.baseY) item.mesh.position.y = item.baseY + Math.sin(elapsed * item.speed + index) * 0.045;
-        if (item.gateRotation !== undefined) item.mesh.rotation.z = -Math.sin(elapsed * item.speed + index) * 0.34;
       });
 
       hubBase.rotation.y = Math.sin(elapsed * 0.45) * 0.08;
     } else {
-      cars.forEach((car, index) => {
-        car.mesh.position.lerpVectors(car.from, car.to, index === 2 ? 0.45 : 0.58);
-        car.mesh.rotation.y = car.rot;
-        car.mesh.visible = true;
+      routes.forEach((route) => parkCar(route));
+      gateState.forEach((state) => {
+        state.arm.rotation.z = -0.26;
       });
     }
 
